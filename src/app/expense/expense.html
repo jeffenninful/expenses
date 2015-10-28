@@ -1,0 +1,103 @@
+<div ng-include src="'app/navbar/navbar.html'"></div>
+<p>expense page</p>
+<div class="col-md-12 col-lg-12">
+  <div class="text-right">
+    <p>Mileage Rate: {{ vm.milageRate | currency}}</p>
+
+    <h4>Final Total : {{ vm.expenseTotal | currency}}</h4>
+  </div>
+  <h3 class="page-header text-center"> {{vm.currentMonth}} Monthly Expenses</h3>
+
+  <form name="form" class="form-horizontals" ng-submit="vm.submitExpenses(form)" novalidate>
+    <ng-form name="expenseForm" class="row text-center" ng-repeat="field in vm.expenses">
+      <div class="col-md-2 form-group">
+        <div class="text-center" ng-show="$first">Date</div>
+        <div class="col-md-2">
+          <div class="glyphicon glyphicon-plus text-primary" ng-show="{{$first}}" ng-click="vm.newField()"></div>
+          <div class="glyphicon glyphicon-remove text-danger" ng-show="{{!$first}}"
+               ng-click="vm.deleteField($index)"></div>
+        </div>
+        <div class="col-md-10">
+            <input type="text" name="expenseDate" class="form-control" placeholder="Date" ng-required="true"
+                   ng-model="vm.data[$index].expenseDate"  ng-click="vm.open($event, $index)" close-text="Close"
+                   datepicker-popup="{{vm.format}}"  is-open="vm.opened[$index]"/>
+          <div ng-messages="expenseForm.expenseDate.$error"
+               ng-show="expenseForm.expenseDate.$touched ||  form.$submitted">
+            <p ng-message="required" class="text-danger">Date required</p>
+            <p ng-message="pattern" class="text-danger">Input must be a date</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 form-group">
+        <div class="text-center" ng-show="$first">Category</div>
+        <select class="form-control" name="category" ng-options="item.name as item.name for item in vm.expenseCategory"
+                ng-model="vm.data[$index].category"  ng-change="vm.calculateTotal()" required>
+          <option value="">Select</option>
+        </select>
+
+        <div ng-messages="expenseForm.category.$error"
+             ng-show="expenseForm.category.$touched ||  form.$submitted">
+          <p ng-message="required" class="text-danger">Category required</p>
+        </div>
+      </div>
+      <div class="col-md-2 form-group">
+        <div class="text-center" ng-show="$first">Description</div>
+        <input type="text" class="form-control" name="description" placeholder="Vendor/Description" required
+               ng-model="vm.data[$index].description"/>
+
+        <div ng-messages="expenseForm.description.$error"
+             ng-show="expenseForm.description.$touched ||  form.$submitted">
+          <p ng-message="required" class="text-danger">Description required</p>
+        </div>
+      </div>
+      <div class="col-md-1 form-group">
+        <div class="text-center" ng-show="$first">Amount</div>
+        <input type="text" class="form-control" name="amount" required placeholder="$$/mph"
+               ng-change="vm.calculateTotal()" ng-model="vm.data[$index].amount" ng-pattern="/^[0-9]+$/"/>
+
+        <div ng-messages="expenseForm.amount.$error"
+             ng-show="expenseForm.amount.$touched ||  form.$submitted">
+          <p ng-message="required" class="text-danger">Amount required</p>
+
+          <p ng-message="pattern" class="text-danger">Numbers only</p>
+        </div>
+      </div>
+      <div class="col-md-1 form-group">
+        <div class="text-center" ng-show="$first">Billable</div>
+        <select class="form-control" name="billable" ng-model="vm.data[$index].billable"
+                ng-options="item.name as item.name for item in vm.billingOptions" required>
+          <option value=""> Select</option>
+        </select>
+
+        <div ng-messages="expenseForm.billable.$error"
+             ng-show="expenseForm.billable.$touched ||  form.$submitted">
+          <p ng-message="required" class="text-danger">Expense type required</p>
+        </div>
+      </div>
+      <div class="col-md-2 form-group">
+        <div class="text-center" ng-show="$first">Project Code</div>
+        <input type="text" class="form-control" name="projectCode" placeholder="Project Code"
+               ng-required="vm.data[$index].billable === 'Yes'"
+               ng-model="vm.data[$index].projectCode"/>
+
+        <div ng-messages="expenseForm.projectCode.$error"
+             ng-show="expenseForm.projectCode.$touched || form.$submitted">
+          <p ng-message="required" class="text-danger">Project code required</p>
+        </div>
+      </div>
+      <div class="col-md-2 form-group">
+        <div class="text-center" ng-show="$first">Attachment</div>
+        <input type="file"/>
+      </div>
+    </ng-form>
+    <div class="row form-group">
+      <input type="submit" name="submit" class="col-md-2 col-md-offset-4 btn btn-primary" value="Submit"/>
+      <input type="button" name="cancel" class="col-md-2 btn btn-danger col-padding-1"
+             value="Cancel" ng-click="vm.cancel()"/>
+    </div>
+  </form>
+
+
+</div>
+
+

@@ -1,0 +1,10 @@
+{
+  "microsoft": {
+    "clientId": "65029ba7-f353-4592-ac8b-de23872fc9bd",
+    "site": "https://login.microsoftonline.com/common",
+    "clientSecret": "khNdkBYh8brokF8ZKGXOATd",
+    "tokenPath": "/oauth2/v2.0/token",
+    "AuthorizationPath": "/oauth2/v2.0/authorize"
+  },
+  "supersecret": "my-super-secret"
+}
