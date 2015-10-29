@@ -1,28 +1,32 @@
 (function () {
-  'use strict';
+    'use strict';
 
-  angular.module('expenses')
-    .factory('AuthInterceptor', authInterceptor)
-    .config(addInterceptor);
+    angular.module('expenses')
+        .factory('AuthInterceptor', authInterceptor);
 
-  /** @ngInject */
-  function authInterceptor($q, $injector) {
+    /** @ngInject */
+    function authInterceptor($q, $injector) {
 
-    return {
-      responseError: responseError
-    };
+        return {
+            request: request,
+            responseError: responseError
+        };
 
-    function responseError(rejection) {
-      if (rejection.status === 401 && rejection.config.url !== "/v1/authorize") {
-        var $state = $injector.get('$state');
-        $state.go('login');
-      }
-      return $q.reject(rejection);
+        function request(config) {
+            var user = JSON.parse(localStorage.getItem('authUser'));
+            if (user) {
+                config.headers['x-access-token'] = user.token;
+            }
+            return config;
+        }
+
+        function responseError(rejection) {
+            if (rejection.status === 401 && rejection.config.url !== "/v1/authorize") {
+                var $state = $injector.get('$state');
+                $state.go('login');
+            }
+            return $q.reject(rejection);
+        }
     }
-  }
-
-  function addInterceptor($httpProvider) {
-    $httpProvider.interceptors.push('AuthInterceptor');
-  }
 
 })();

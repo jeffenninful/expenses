@@ -1,20 +1,16 @@
-(function() {
-  'use strict';
+(function () {
+      'use strict';
 
-  angular
-    .module('expenses')
-    .config(config);
+      angular
+            .module('expenses')
+            .config(config);
 
-  /** @ngInject */
-  function config($logProvider, toastr) {
-    // Enable log
-    $logProvider.debugEnabled(true);
+      /** @ngInject */
+      function config($logProvider, $httpProvider) {
+            // Enable log
+            $logProvider.debugEnabled(true);
 
-    // Set options third-party lib
-    toastr.options.timeOut = 3000;
-    toastr.options.positionClass = 'toast-top-right';
-    toastr.options.preventDuplicates = true;
-    toastr.options.progressBar = true;
-  }
+            $httpProvider.interceptors.push('AuthInterceptor');
+      }
 
 })();

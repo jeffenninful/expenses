@@ -11,25 +11,25 @@
       .state('login', {
         url: '/',
         templateUrl: 'app/login/login.html',
-        controller: 'LoginController',
+        controller: 'LoginCtrl',
         controllerAs: 'vm'
       })
       .state('home', {
         url: '/home',
         templateUrl: 'app/home/home.html',
-        controller: 'HomeController',
+        controller: 'HomeCtrl',
         controllerAs: 'vm'
       })
       .state('serviceError', {
         url: '/serviceError',
         templateUrl: 'app/serviceError/error.html',
-        controller: 'ServiceErrorController',
+        controller: 'ServiceErrorCtrl',
         controllerAs: 'vm'
       })
       .state('expense', {
         url: '/expense',
         templateUrl: 'app/expense/expense.html',
-        controller: 'ExpenseController',
+        controller: 'ExpenseCtrl',
         controllerAs: 'vm'
       });
 

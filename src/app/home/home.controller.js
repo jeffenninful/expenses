@@ -1,22 +1,32 @@
 (function () {
-  'use strict';
+    'use strict';
 
-  angular
-    .module('expenses')
-    .controller('HomeController', HomeController);
+    angular
+        .module('expenses')
+        .controller('HomeCtrl', HomeCtrl);
 
-  /** @ngInject */
-  function HomeController(Session) {
-    var vm = this;
+    /** @ngInject */
+    function HomeCtrl($state, Session) {
 
-    vm.getUser = getProfile;
+        var vm = this;
+        vm.getUser = getProfile;
 
-    function getProfile() {
-      Session.getUser().then(function (data) {
-        vm.user = data;
-      }, function () {
+        init();
 
-      });
+        function init() {
+            console.log('logged in ',Session.isLoggedIn());
+
+            if (!Session.isLoggedIn()) {
+                $state.go('login');
+            }
+        }
+
+        function getProfile() {
+            Session.getUser().then(function (data) {
+                vm.user = data;
+            }, function () {
+
+            });
+        }
     }
-  }
 })();
