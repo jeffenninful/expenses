@@ -6,7 +6,7 @@
         .controller('NavbarCtrl', NavbarCtrl);
 
     /** @ngInject */
-    function NavbarCtrl($state, Auth) {
+    function NavbarCtrl($state, Auth, Session) {
         var vm = this;
         vm.guest = {};
         vm.login = login;
@@ -24,9 +24,11 @@
             }
         }
 
-        function logout(){
-            localStorage.removeItem('authUser');
-            $state.go('login');
+        function logout() {
+            Session.logout().then(function () {
+                $state.go('login');
+
+            });
         }
     }
 })();

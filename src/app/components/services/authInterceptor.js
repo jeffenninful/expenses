@@ -13,10 +13,9 @@
         };
 
         function request(config) {
-            var user = JSON.parse(localStorage.getItem('authUser'));
-            if (user) {
-                config.headers['x-access-token'] = user.token;
-            }
+            var session = $injector.get('Session');
+            config.headers['x-access-token'] = session.getToken();
+
             return config;
         }
 

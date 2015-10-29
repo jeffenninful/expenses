@@ -8,17 +8,39 @@
     function session($http, $q) {
 
         return {
-            getUser: getUser,
+            getProfile: getProfile,
+            getId: getId,
+            getToken: getToken,
+            logout: logout,
             isLoggedIn: isLoggedIn
         };
 
-        function getUser(data) {
-            return makeRequest('GET', '/v1/user', data);
+        function getId() {
+            var user = JSON.parse(localStorage.getItem('authUser'));
+            return user ? user.id : 123;
         }
+
+        function getToken() {
+            var user = JSON.parse(localStorage.getItem('authUser'));
+            return user ? user.token : null;
+        }
+
+        function getProfile(data) {
+            return makeRequest('GET', '/v1/user/'+ this.getId(), data);
+        }
+
 
         function isLoggedIn() {
             return localStorage.getItem('authUser');
         }
+
+        function logout() {
+            var defer = $q.defer();
+            localStorage.removeItem('authUser');
+            defer.resolve();
+            return defer.promise;
+        }
+
 
         function makeRequest(method, url, data) {
             var deferred = $q.defer();
