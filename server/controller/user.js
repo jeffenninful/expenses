@@ -66,7 +66,7 @@ module.exports = function (app) {
 
     function oneMiddleWare(req, res, next) {
         if (req.params.userId != '123') {
-            User.findById(req.params.userId, function (err, user) {
+            User.findById(req.params.userId, {password: 0, __v: 0}, function (err, user) {
                 if (err) {
                     res.status(500).send(err);
                 } else if (user) {

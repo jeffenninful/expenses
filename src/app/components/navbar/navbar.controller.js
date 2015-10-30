@@ -11,6 +11,19 @@
         vm.guest = {};
         vm.login = login;
         vm.logout = logout;
+        vm.isLoggedIn = isLoggedIn;
+        vm.items = [
+            'Settings',
+            'Edit Profile'
+        ];
+
+        Session.getUser().then(function (data) {
+            vm.name = data.user.firstName;
+        });
+
+        function isLoggedIn() {
+            return Session.isLoggedIn();
+        }
 
         function login(form) {
             if (form.$valid) {
@@ -27,7 +40,6 @@
         function logout() {
             Session.logout().then(function () {
                 $state.go('login');
-
             });
         }
     }

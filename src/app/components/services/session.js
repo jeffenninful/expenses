@@ -8,39 +8,43 @@
     function session($http, $q) {
 
         return {
-            getProfile: getProfile,
-            getId: getId,
-            getToken: getToken,
+            getUser: getUser,
+            reloadUser: reloadUser,
             logout: logout,
-            isLoggedIn: isLoggedIn
+            isLoggedIn: isLoggedIn,
+            saveUser: saveUser
         };
 
-        function getId() {
-            var user = JSON.parse(localStorage.getItem('authUser'));
-            return user ? user.id : 123;
-        }
-
-        function getToken() {
-            var user = JSON.parse(localStorage.getItem('authUser'));
-            return user ? user.token : null;
-        }
-
-        function getProfile(data) {
-            return makeRequest('GET', '/v1/user/'+ this.getId(), data);
-        }
-
-
         function isLoggedIn() {
-            return localStorage.getItem('authUser');
+            return !!localStorage.getItem('authUID');
+        }
+
+        function saveUser(data) {
+            return localStorage.setItem('authUID', JSON.stringify(data));
+        }
+
+        function getUser() {
+            var defer = $q.defer();
+            var data = JSON.parse(localStorage.getItem('authUID'));
+            if (data) {
+                defer.resolve(data);
+            } else {
+                defer.reject({error: 'No user found'});
+            }
+            return defer.promise;
         }
 
         function logout() {
             var defer = $q.defer();
-            localStorage.removeItem('authUser');
+            localStorage.removeItem('authUID');
             defer.resolve();
             return defer.promise;
         }
 
+        function reloadUser(data) {
+            //TODO: Supply user id
+            makeRequest('GET', '/v1/user/:id', data);
+        }
 
         function makeRequest(method, url, data) {
             var deferred = $q.defer();
@@ -56,4 +60,5 @@
             return deferred.promise;
         }
     }
-})();
+})
+();

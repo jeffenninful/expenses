@@ -11,22 +11,16 @@
         vm.states = ['AA', 'BB', 'CC'];
         vm.register = register;
 
-        function showMessage(msg) {
-            alert(msg);
-        }
-
         function register(form) {
             if (form.$valid) {
-                Auth.register(vm.guest).then(function (data) {
-                    showMessage('Data posted successfully.', data);
+                Auth.register(vm.guest).then(function () {
                     $state.go('home');
                 }, function (error) {
-                    showMessage('Error encountered.', error);
+                    console.log('Error encountered.', error);
                 });
             } else {
                 console.log("Errors in form");
             }
         }
-
     }
 }());

@@ -3,82 +3,80 @@ var jwt = require('jsonwebtoken');
 var bCrypt = require('bcrypt-nodejs');
 
 module.exports = function (app) {
-  var User = require('../model/user');
-  var router = express.Router();
+    var User = require('../model/user');
+    var router = express.Router();
 
-  router.route('/')
-    .post(register);
+    router.route('/')
+        .post(register);
 
-  function register(req, res) {
-    if (!req.body.email) {
-      res.status(404);
-      res.json({
-        code: 'MISSING_VALUE',
-        field: 'email'
-      });
-      return;
-    }
-    if (!req.body.password) {
-      res.status(404);
-      res.json({
-        code: 'MISSING_VALUE',
-        field: 'password'
-      });
-      return;
-    }
-    User.findOne({
-        email: req.body.email
-      }, function (err, user) {
-        if (err) {
-          res.status(500);
-          res.json({
-            code: 'SERVICE_ERROR',
-            field: null
-          });
+    function register(req, res) {
+        if (!req.body.email) {
+            res.status(404);
+            res.json({
+                code: 'MISSING_VALUE',
+                field: 'email'
+            });
+            return;
         }
-        if (user) {
-          res.status(404);
-          res.json({
-            error: {
-              code: 'USER_EXIST',
-              field: 'email'
-            }
-          });
-        } else {
-          //no such user hence create user
-          var newUser = new User();
-          newUser.email = req.body.email;
-          newUser.password = createHash(req.body.password);
-          newUser.firstName = req.body.firstName;
-
-          //save user
-          console.log('saving', newUser);
-          newUser.save(function (err, user) {
+        if (!req.body.password) {
+            res.status(404);
+            res.json({
+                code: 'MISSING_VALUE',
+                field: 'password'
+            });
+            return;
+        }
+        User.findOne({
+            email: req.body.email
+        }, function (err, user) {
             if (err) {
-              res.status(500);
-              res.json({
-                code: 'SERVICE_ERROR',
-                field: null
-              });
-            } else {
-              var token = jwt.sign(user, app.get('supersecret'), function () {
-                expiresInMinutes: 2
-              });
-              res.status(200);
-              res.json({
-                user: user,
-                token: token
-              });
+                res.status(500);
+                res.json({
+                    code: 'SERVICE_ERROR',
+                    field: null
+                });
             }
-          });
-        }
-      }); // find existing user callback
+            if (user) {
+                res.status(404);
+                res.json({
+                    error: {
+                        code: 'USER_EXIST',
+                        field: 'email'
+                    }
+                });
+            } else {
+                //no such user hence create user
+                var newUser = new User(req.body);
+                newUser.password = createHash(req.body.password);
+                newUser.dateJoined = new Date();
+                newUser.save(function (err, user) {
+                    if (err) {
+                        res.status(500);
+                        res.json({
+                            code: 'SERVICE_ERROR',
+                            field: null
+                        });
+                    } else {
+                        var token = jwt.sign(user, app.get('supersecret'), function () {
+                            expiresInMinutes: 2
+                        });
+                        var modifiedUser = JSON.parse(JSON.stringify(user));
+                        delete modifiedUser.password;
+                        res.status(200);
+                        res.json({
+                            user: modifiedUser,
+                            token: token
+                        });
+                    }
+                });
+            }
+        }); // find existing user callback
 
-  }
+    }
 
-  function createHash(password) {
-    return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
-  }
+    function createHash(password) {
+        return bCrypt.hashSync(password, bCrypt.genSaltSync(10), null);
+    }
 
-  return router;
+    return router;
 };

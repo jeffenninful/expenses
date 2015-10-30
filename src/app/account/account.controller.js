@@ -3,13 +3,13 @@
 
     angular
         .module('expenses')
-        .controller('HomeCtrl', HomeCtrl);
+        .controller('AccountCtrl', HomeCtrl);
 
     /** @ngInject */
     function HomeCtrl($state, Session) {
 
         var vm = this;
-        vm.getProfile = getProfile;
+        vm.getUser = getProfile;
 
         init();
 
@@ -20,9 +20,8 @@
         }
 
         function getProfile() {
-            Session.getUser().then(function (data) {
+            Session.getProfile().then(function (data) {
                 vm.user = data;
-                console.log('tye', typeof data);
             }, function () {
                 angular.noop();
             });

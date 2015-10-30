@@ -8,7 +8,7 @@ var userModel = new Schema({
     lastName: {type: String},
     email: {type: String},
     password: {type: String},
-    dateJoined: {type: String},
+    dateJoined: {type: Date},
     active: {type: Boolean, default: true},
     branch: {type: String},
     branchCode: {type: String},

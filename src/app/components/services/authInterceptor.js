@@ -14,7 +14,10 @@
 
         function request(config) {
             var session = $injector.get('Session');
-            config.headers['x-access-token'] = session.getToken();
+            session.getUser().then(function (data) {
+                config.headers['x-access-id'] = data.user._id;
+                config.headers['x-access-token'] = data.token;
+            });
 
             return config;
         }

@@ -5,9 +5,7 @@
         .factory('Auth', auth);
 
     /** @ngInject */
-    function auth($http, $q) {
-
-        //var loginCookie = "loginCookie";
+    function auth($http, $q, Session) {
 
         return {
             login: login,
@@ -20,23 +18,17 @@
                 method: 'POST',
                 url: '/v1/authorize',
                 data: angular.toJson(data)
+
             }).then(function (response) {
-
-                var authUser = {
-                    id: response.data.user._id,
-                    token: response.data.token,
-                    started: new Date()
-                };
-                localStorage.setItem('authUser', JSON.stringify(authUser));
-                $http.defaults.headers.common['x-access-token'] = response.data.token;
+                Session.saveUser(response.data);
                 deferred.resolve(response.data);
-            }, function (error) {
 
+            }, function (error) {
                 deferred.reject(error.data);
+
             });
             return deferred.promise;
         }
-
 
         function register(data) {
             var deferred = $q.defer();
@@ -45,9 +37,11 @@
                 method: 'POST',
                 url: '/v1/register',
                 data: angular.toJson(data)
+
             }).then(function (response) {
-                $http.defaults.headers.common['x-access-token'] = response.data.token;
+                Session.saveUser(response.data);
                 deferred.resolve(response.data);
+
             }, function (error) {
                 deferred.reject(error.data);
             });

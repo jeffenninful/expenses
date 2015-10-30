@@ -8,8 +8,8 @@
       'ngTouch',
       'ngSanitize',
       'ngMessages',
-      'ngResource',
       'ui.router',
-      'ui.bootstrap']);
+      'ui.bootstrap'
+      ]);
 
 })();

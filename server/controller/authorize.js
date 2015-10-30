@@ -26,45 +26,46 @@ module.exports = function (app) {
             });
             return;
         }
-        User.findOne({
-            email: req.body.email
-        }, function (err, user) {
-            if (err) {
-                res.status(500);
-                res.json({
-                    code: 'SERVICE_ERROR',
-                    field: null
-                });
-            }
-            if (!user) {
-                res.status(404);
-                res.json({
-                    error: {
-                        code: 'USER_NOT_FOUND',
-                        message: 'No user found.'
-                    }
-                });
-            } else {
-                if (!isValidPassword(req.body.password, user)) {
+        User.findOne({email: req.body.email},
+            function (err, user) {
+                if (err) {
+                    res.status(500);
+                    res.json({
+                        code: 'SERVICE_ERROR',
+                        field: null
+                    });
+                }
+                if (!user) {
                     res.status(404);
                     res.json({
                         error: {
-                            code: 'INVALID_CREDENTIALS',
-                            message: 'Authentication failed. wrong password'
+                            code: 'USER_NOT_FOUND',
+                            message: 'No user found.'
                         }
                     });
                 } else {
-                    var token = jwt.sign(user, app.get('supersecret'), function () {
-                        expiresInMinutes: 2
-                    });
-                    res.status(200);
-                    res.json({
-                        user: user,
-                        token: token
-                    });
+                    if (!isValidPassword(req.body.password, user)) {
+                        res.status(404);
+                        res.json({
+                            error: {
+                                code: 'INVALID_CREDENTIALS',
+                                message: 'Authentication failed. wrong password'
+                            }
+                        });
+                    } else {
+                        var token = jwt.sign(user, app.get('supersecret'), function () {
+                            expiresInMinutes: 2
+                        });
+                        var modifiedUser = JSON.parse(JSON.stringify(user));
+                        delete modifiedUser.password;
+                        res.status(200);
+                        res.json({
+                            user: modifiedUser,
+                            token: token
+                        });
+                    }
                 }
-            }
-        });
+            });
     }
 
     function isValidPassword(password, user) {
