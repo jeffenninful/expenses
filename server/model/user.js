@@ -2,15 +2,13 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var userModel = new Schema({
-    userName: {type: String},
     firstName: {type: String},
-    middleName: {type: String},
     lastName: {type: String},
     email: {type: String},
     password: {type: String},
     dateJoined: {type: Date},
     active: {type: Boolean, default: true},
-    branch: {type: String},
+    location: {type: String},
     branchCode: {type: String},
     role: {type: String},
     projects: [{type: String}],

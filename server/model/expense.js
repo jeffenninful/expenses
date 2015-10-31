@@ -8,7 +8,7 @@ var expenseModel = new Schema({
   amount: {type: Number},
   status: {type: String, default: 'pending'},
   billable: {type: Boolean},
-  billingCode: {type: String}
+  projectCode: {type: String}
 });
 
 module.exports = mongoose.model('Expense', expenseModel);

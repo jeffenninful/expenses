@@ -1,7 +1,5 @@
 <div ng-include="'app/components/navbar/navbar.html'"></div>
 
-<h1 class="lead text-center">Expense page</h1>
-<!--
 <div class="col-md-12 col-lg-12">
   <div class="text-right">
     <p>Mileage Rate: {{ vm.milageRate | currency}}</p>
@@ -10,7 +8,7 @@
   </div>
   <h3 class="page-header text-center"> {{vm.currentMonth}} Monthly Expenses</h3>
 
-  <form name="form" class="form-horizontals" ng-submit="vm.submitExpenses(form)" novalidate>
+  <form name="form" class="form-horizontals" ng-submit="vm.saveExpense(form)" novalidate>
     <ng-form name="expenseForm" class="row text-center" ng-repeat="field in vm.expenses">
       <div class="col-md-2 form-group">
         <div class="text-center" ng-show="$first">Date</div>
@@ -101,6 +99,6 @@
 
 
 </div>
--->
+
 
 

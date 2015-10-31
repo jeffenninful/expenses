@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Dues/Subscription",
+        "active": true
+    },
+    {
+        "name": "Employee Welfare",
+        "active": true
+    },
+    {
+        "name": "Meals/Entertainment-50%",
+        "active": true
+    },
+    {
+        "name": "Meals/Entertainment-100%",
+        "active": true
+    },
+    {
+        "name": "Office Equipment",
+        "active": true
+    },
+    {
+        "name": "Office Furniture",
+        "active": true
+    },
+    {
+        "name": "Partner Expenses",
+        "active": true
+    },
+    {
+        "name": "Other",
+        "active": true
+    },
+    {
+        "name": "Airfare",
+        "active": true
+    },
+    {
+        "name": "Car Rental",
+        "active": true
+    },
+    {
+        "name": "Cell Phone",
+        "active": true
+    },
+    {
+        "name": "Job board",
+        "active": true
+    },
+    {
+        "name": "lodging",
+        "active": true
+    },
+    {
+        "name": "Mileage",
+        "active": true
+    },
+    {
+        "name": "Office Supplies",
+        "active": true
+    },
+    {
+        "name": "Parking/Taxi",
+        "active": true
+    },
+    {
+        "name": "Postage",
+        "active": true
+    },
+    {
+        "name": "Software",
+        "active": true
+    }
+]

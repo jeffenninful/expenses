@@ -12,7 +12,7 @@
         .controller('ExpenseCtrl', ExpenseCtrl);
 
     /* @ngInject */
-    function ExpenseCtrl($state, $filter, Session) {
+    function ExpenseCtrl($state, $filter, Session, Dao) {
         var vm = this;
 
         init();
@@ -32,17 +32,11 @@
         vm.milageRate = 0.55;
         vm.format = 'dd-MM-yy';
         vm.currentMonth = $filter('date')(new Date(), 'MMMM');
-        vm.expenseCategory = [
-            {name: 'Airfare'}, {name: 'Car Rental'},
-            {name: 'Cell Phone'}, {name: 'Dues/Subscription'},
-            {name: 'Employee Welfare'}, {name: 'Job board'},
-            {name: 'lodging'}, {name: 'Meals/Entertainment-50%'},
-            {name: 'Meals/Entertainment-100%'}, {name: 'Mileage'},
-            {name: 'Office Equipment'}, {name: 'Office Furniture'},
-            {name: 'Office Supplies'}, {name: 'Parking/Taxi'},
-            {name: 'Partner Expenses'}, {name: 'Postage'},
-            {name: 'Software'}, {name: 'Other'}
-        ];
+
+        Dao.getExpenseCategory().then(function (data) {
+            vm.expenseCategory = data;
+        });
+
         vm.billingOptions = [
             {name: 'Yes'},
             {name: 'No'}
@@ -53,7 +47,7 @@
         vm.reset = reset;
         vm.newField = newField;
         vm.deleteField = deleteField;
-        vm.submitExpenses = submitExpenses;
+        vm.saveExpense = saveExpense;
         vm.calculateTotal = calculateTotal;
 
 
@@ -69,14 +63,20 @@
             vm.expenses.push(vm.count);
         }
 
-        function submitExpenses(form) {
+        function saveExpense(form) {
             if (form.$valid) {
-                angular.forEach(vm.data, function () {
+                console.log('form is valid', vm.data);
+                Dao.saveExpense(vm.data).then(function (data) {
+                    console.log('expense saved', data);
 
+                }, function (error) {
+                    console.log('error saving expense', error);
                 });
                 vm.reset();
                 form.$setUntouched();
                 form.$setPristine();
+            }else{
+                console.log('form has errors ');
             }
         }
 

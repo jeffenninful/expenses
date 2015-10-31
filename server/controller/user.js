@@ -34,16 +34,15 @@ module.exports = function (app) {
         }
     });
 
-
-    router.use('/:userId', oneMiddleWare);
+    router.use('/:id', oneMiddleWare);
 
     router.route('/')
         .get(getAll)
         .post(postOne);
 
-    router.route('/:userId')
+    router.route('/:id')
         .get(getOne)
-        .put(putOne)
+        .put(patchOne)
         .patch(patchOne)
         .delete(removeOne);
 
@@ -61,12 +60,15 @@ module.exports = function (app) {
     function postOne(req, res) {
         var user = new User(req.body);
         user.save();
-        res.status(201).send(user);
+        res.status(201);
+        res.json({
+            profile: req.user
+        });
     }
 
     function oneMiddleWare(req, res, next) {
-        if (req.params.userId != '123') {
-            User.findById(req.params.userId, {password: 0, __v: 0}, function (err, user) {
+        if (req.params.id != '123') {
+            User.findById(req.params.id, {password: 0, __v: 0}, function (err, user) {
                 if (err) {
                     res.status(500).send(err);
                 } else if (user) {
@@ -86,24 +88,12 @@ module.exports = function (app) {
     }
 
     function getOne(req, res) {
-        res.json(req.user);
+        res.json({
+            profile: req.user
+        });
     }
 
-    function putOne(req, res) {
-        req.user.firstName = req.body.firstName;
-        req.user.middleName = req.body.middleName;
-        req.user.lastName = req.body.lastName;
-        req.user.active = req.body.active;
 
-        req.user.save(function (err) {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.json(req.user);
-            }
-        })
-
-    }
 
     function patchOne(req, res) {
         if (req.body._id) {
@@ -116,7 +106,9 @@ module.exports = function (app) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json({
+                    profile: req.user
+                });
             }
         });
     }

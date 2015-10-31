@@ -60,7 +60,7 @@ module.exports = function (app) {
                         delete modifiedUser.password;
                         res.status(200);
                         res.json({
-                            user: modifiedUser,
+                            profile: modifiedUser,
                             token: token
                         });
                     }

@@ -3,10 +3,11 @@ var jwt = require('jsonwebtoken');
 
 module.exports = function (app) {
     var router = express.Router();
-    var Expense = require('../model/expense');
+    var Project = require('../model/project');
 
     router.use(function (req, res, next) {
         var token = req.headers['x-access-token'] || req.body.token || req.query.token;
+
         if (token) {
             jwt.verify(token, app.get('supersecret'), function (err, decoded) {
                 if (err) {
@@ -34,7 +35,6 @@ module.exports = function (app) {
     });
 
     router.use('/:id', oneMiddleWare);
-
     router.route('/')
         .get(getAll)
         .post(postOne);
@@ -47,7 +47,7 @@ module.exports = function (app) {
 
 
     function getAll(req, res) {
-        Expense.find(function (err, list) {
+        Project.find(function (err, list) {
             if (err) {
                 res.status(500).send(err);
             } else {
@@ -57,42 +57,40 @@ module.exports = function (app) {
     }
 
     function postOne(req, res) {
-        console.log(req);
-
-        var user = new Expense(req.body);
-        user.save();
-        res.status(201).send(user);
+        var work = new Project(req.body);
+        work.save();
+        res.status(201).send(work);
     }
 
     function oneMiddleWare(req, res, next) {
-        Expense.findById(req.params.id, function (err, user) {
+        Project.findById(req.params.id, function (err, work) {
             if (err) {
                 res.status(500).send(err);
-            } else if (user) {
-                req.user = user;
+            } else if (work) {
+                req.work = work;
                 next();
             } else {
-                res.status(400).send('user not found');
+                res.status(400).send('project not found');
             }
         });
     }
 
     function getOne(req, res) {
-        res.json(req.user);
+        res.json(req.work);
     }
 
     function putOne(req, res) {
-        req.user.firstName = req.body.firstName;
-        req.user.middleName = req.body.middleName;
-        req.user.lastName = req.body.lastName;
-        req.user.dob = req.body.dob;
-        req.user.active = req.body.active;
+        req.work.firstName = req.body.firstName;
+        req.work.middleName = req.body.middleName;
+        req.work.lastName = req.body.lastName;
+        req.work.dob = req.body.dob;
+        req.work.active = req.body.active;
 
-        req.user.save(function (err) {
+        req.work.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.work);
             }
         })
 
@@ -103,23 +101,23 @@ module.exports = function (app) {
             delete req.body._id;
         }
         for (var prop in req.body) {
-            req.user[prop] = req.body[prop];
+            req.work[prop] = req.body[prop];
         }
-        req.user.save(function (err) {
+        req.work.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.work);
             }
         });
     }
 
     function removeOne(req, res) {
-        req.user.remove(function (err) {
+        req.work.remove(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.status(204).send('user removed');
+                res.status(204).send('project removed');
             }
         });
     }

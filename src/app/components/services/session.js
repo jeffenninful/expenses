@@ -8,28 +8,35 @@
     function session($http, $q) {
 
         return {
-            getUser: getUser,
-            reloadUser: reloadUser,
+            getProfile: getProfile,
+            reloadProfile: reloadProfile,
+            updateProfile: updateProfile,
             logout: logout,
             isLoggedIn: isLoggedIn,
-            saveUser: saveUser
+            saveProfile: saveProfile
         };
 
         function isLoggedIn() {
             return !!localStorage.getItem('authUID');
         }
 
-        function saveUser(data) {
-            return localStorage.setItem('authUID', JSON.stringify(data));
+        function saveProfile(data) {
+            return this.getProfile().then(function (response) {
+                delete response.profile;
+                response.profile = data.profile;
+                return localStorage.setItem('authUID', JSON.stringify(response));
+            }, function () {
+                return localStorage.setItem('authUID', JSON.stringify(data));
+            });
         }
 
-        function getUser() {
+        function getProfile() {
             var defer = $q.defer();
             var data = JSON.parse(localStorage.getItem('authUID'));
             if (data) {
                 defer.resolve(data);
             } else {
-                defer.reject({error: 'No user found'});
+                defer.reject();
             }
             return defer.promise;
         }
@@ -41,9 +48,18 @@
             return defer.promise;
         }
 
-        function reloadUser(data) {
-            //TODO: Supply user id
-            makeRequest('GET', '/v1/user/:id', data);
+        function reloadProfile() {
+            return this.getProfile().then(function (response) {
+                var id = response.profile._id;
+                return makeRequest('GET', '/v1/user/' + id);
+            });
+        }
+
+        function updateProfile(data) {
+            return this.getProfile().then(function (response) {
+                var id = response.profile._id;
+                return makeRequest('PUT', '/v1/user/' + id, data);
+            });
         }
 
         function makeRequest(method, url, data) {
@@ -60,5 +76,4 @@
             return deferred.promise;
         }
     }
-})
-();
+})();

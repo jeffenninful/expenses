@@ -20,11 +20,8 @@
         }
 
         function getProfile() {
-            Session.getUser().then(function (data) {
-                vm.user = data;
-                console.log('tye', typeof data);
-            }, function () {
-                angular.noop();
+            Session.getProfile().then(function (data) {
+                vm.user = data.profile;
             });
         }
     }

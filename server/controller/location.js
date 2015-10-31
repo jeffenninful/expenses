@@ -2,11 +2,12 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 
 module.exports = function (app) {
+    var Location = require('../model/location');
     var router = express.Router();
-    var Expense = require('../model/expense');
 
     router.use(function (req, res, next) {
         var token = req.headers['x-access-token'] || req.body.token || req.query.token;
+
         if (token) {
             jwt.verify(token, app.get('supersecret'), function (err, decoded) {
                 if (err) {
@@ -33,6 +34,7 @@ module.exports = function (app) {
         }
     });
 
+
     router.use('/:id', oneMiddleWare);
 
     router.route('/')
@@ -45,9 +47,9 @@ module.exports = function (app) {
         .patch(patchOne)
         .delete(removeOne);
 
-
+    //accessible to admin. Check for special token before querying
     function getAll(req, res) {
-        Expense.find(function (err, list) {
+        Location.find(function (err, list) {
             if (err) {
                 res.status(500).send(err);
             } else {
@@ -57,42 +59,46 @@ module.exports = function (app) {
     }
 
     function postOne(req, res) {
-        console.log(req);
-
-        var user = new Expense(req.body);
-        user.save();
-        res.status(201).send(user);
+        var local = new Location(req.body);
+        local.save();
+        res.status(201).send(local);
     }
 
     function oneMiddleWare(req, res, next) {
-        Expense.findById(req.params.id, function (err, user) {
-            if (err) {
-                res.status(500).send(err);
-            } else if (user) {
-                req.user = user;
-                next();
-            } else {
-                res.status(400).send('user not found');
-            }
-        });
+        //if (req.params.id !== '123') {
+            Location.findById(req.params.id, function (err, local) {
+                if (err) {
+                    res.status(500).send(err);
+                } else if (local) {
+                    req.local = local;
+                    next();
+                } else {
+                    res.status(400).send('local not found');
+                }
+            });
+        //} else {
+        //    res.status(400);
+        //    res.json({
+        //        code: 'SERVICE_ERROR',
+        //        message: 'Location id not provided'
+        //    });
+        //}
     }
 
     function getOne(req, res) {
-        res.json(req.user);
+        res.json(req.local);
     }
 
     function putOne(req, res) {
-        req.user.firstName = req.body.firstName;
-        req.user.middleName = req.body.middleName;
-        req.user.lastName = req.body.lastName;
-        req.user.dob = req.body.dob;
-        req.user.active = req.body.active;
+        req.local.code = req.body.code;
+        req.local.name = req.body.name;
+        req.local.active = req.body.active;
 
-        req.user.save(function (err) {
+        req.local.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.local);
             }
         })
 
@@ -103,23 +109,23 @@ module.exports = function (app) {
             delete req.body._id;
         }
         for (var prop in req.body) {
-            req.user[prop] = req.body[prop];
+            req.local[prop] = req.body[prop];
         }
-        req.user.save(function (err) {
+        req.local.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.local);
             }
         });
     }
 
     function removeOne(req, res) {
-        req.user.remove(function (err) {
+        req.local.remove(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.status(204).send('user removed');
+                res.status(204).send('location removed');
             }
         });
     }
