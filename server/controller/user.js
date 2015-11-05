@@ -20,7 +20,7 @@ module.exports = function (app) {
                         });
                 } else {
                     req.decoded = decoded;
-                    next()
+                    next();
                 }
             })
         } else {
@@ -46,15 +46,22 @@ module.exports = function (app) {
         .patch(patchOne)
         .delete(removeOne);
 
-    //accessible to admin. Check for special token before querying
     function getAll(req, res) {
-        User.find(function (err, list) {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.json(list);
-            }
-        });
+        if (req.decoded.role === 'admin') {
+            User.find(function (err, list) {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    res.json(list);
+                }
+            });
+        } else {
+            res.json({
+                error : 'UNAUTHORIZED_USER',
+                message: 'Admin priviledges required'
+            });
+
+        }
     }
 
     function postOne(req, res) {
@@ -92,7 +99,6 @@ module.exports = function (app) {
             profile: req.user
         });
     }
-
 
 
     function patchOne(req, res) {

@@ -87,7 +87,7 @@
       </div>
       <div class="col-md-2 form-group">
         <div class="text-center" ng-show="$first">Attachment</div>
-        <input type="file"/>
+        <input type="file" ng-model="vm.data[$index].receipt"/>
       </div>
     </ng-form>
     <div class="row form-group">

@@ -14,11 +14,8 @@
 
         function request(config) {
             var session = $injector.get('Session');
-            session.getProfile().then(function (data) {
-                config.headers['x-access-id'] = data.profile._id;
-                config.headers['x-access-token'] = data.token;
-            });
-
+            var token = session.getCookie('UID') ? session.getCookie('UID').token : '';
+            config.headers['x-access-token'] = token;
             return config;
         }
 

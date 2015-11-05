@@ -14,7 +14,7 @@
         };
 
         function getLocation() {
-            return makeRequest('GET', 'v1/location');
+            return makeRequest('GET', 'v1/department');
         }
 
         function saveExpense() {

@@ -28,7 +28,7 @@
                 data: angular.toJson(data)
 
             }).then(function (response) {
-                Session.saveProfile(response.data);
+                Session.setCookie('UID', response.data);
                 deferred.resolve(response.data);
 
             }, function (error) {

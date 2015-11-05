@@ -4,6 +4,7 @@ var bCrypt = require('bcrypt-nodejs');
 
 module.exports = function (app) {
     var User = require('../model/user');
+    var Session = require('../model/session');
     var router = express.Router();
 
     router.route('/')
@@ -55,6 +56,16 @@ module.exports = function (app) {
                     } else {
                         var token = jwt.sign(user, app.get('supersecret'), function () {
                             expiresInMinutes: 2
+                        });
+                        var session = new Session();
+                        session._id = user._id;
+                        session.token = token;
+                        session.expiration = 180;
+
+                        session.save(function (err) {
+                            if (err) {
+                                console.log('err', err);
+                            }
                         });
                         var modifiedUser = JSON.parse(JSON.stringify(user));
                         delete modifiedUser.password;

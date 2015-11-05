@@ -66,7 +66,7 @@
         function saveExpense(form) {
             if (form.$valid) {
                 console.log('form is valid', vm.data);
-                Dao.saveExpense(vm.data).then(function (data) {
+                Dao.saveExpense(vm.data[0]).then(function (data) {
                     console.log('expense saved', data);
 
                 }, function (error) {
@@ -109,10 +109,6 @@
             });
             vm.expenseTotal = isNaN(total) ? 0 : total;
         }
-
-
     }
+})();
 
-
-})
-();

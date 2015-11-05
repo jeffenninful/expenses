@@ -7,6 +7,7 @@ var expenseModel = new Schema({
   description: {type: String},
   amount: {type: Number},
   status: {type: String, default: 'pending'},
+  receipt: {type: Boolean},
   billable: {type: Boolean},
   projectCode: {type: String}
 });

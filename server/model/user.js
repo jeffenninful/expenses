@@ -7,13 +7,12 @@ var userModel = new Schema({
     email: {type: String},
     password: {type: String},
     dateJoined: {type: Date},
-    active: {type: Boolean, default: true},
-    location: {type: String},
-    branchCode: {type: String},
-    role: {type: String},
+    department: {type: String},
     projects: [{type: String}],
     manages: [{type: String}],
-    managedBy: [{type: String}]
+    managerId: [{type: String}],
+    role: {type: String, default: 'user'},
+    active: {type: Boolean, default: true}
 });
 
 module.exports = mongoose.model('User', userModel);

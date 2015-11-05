@@ -16,7 +16,7 @@
         }, function () { });
 
         Dao.getLocation().then(function (data) {
-            vm.location = data;
+            vm.department = data;
         }, function () { });
 
         init();
@@ -28,8 +28,9 @@
         }
 
         function updateProfile() {
-            Session.updateProfile(vm.guest).then(function (data) {
-                Session.saveProfile(data);
+            Session.updateProfile(vm.guest).then(function (response) {
+                //Session.deleteCookie('UID');
+                //Session.setCookie('UID', response.data);
                 $state.reload();
             }, function () {
                 angular.noop();

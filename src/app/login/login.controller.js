@@ -27,6 +27,7 @@
                     console.log('Error encountered.', error);
                 });
             } else {
+                //scroll to first error
                 console.log("Errors in form");
             }
         }

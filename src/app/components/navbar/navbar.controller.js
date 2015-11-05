@@ -39,6 +39,7 @@
 
         function logout() {
             Session.logout().then(function () {
+                Session.deleteCookie('UID');
                 $state.go('login');
             });
         }
