@@ -29,8 +29,7 @@
 
         function updateProfile() {
             Session.updateProfile(vm.guest).then(function (response) {
-                //Session.deleteCookie('UID');
-                //Session.setCookie('UID', response.data);
+                Session.setCookie('UID', response);
                 $state.reload();
             }, function () {
                 angular.noop();

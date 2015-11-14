@@ -22,6 +22,9 @@
         function responseError(rejection) {
             if (rejection.status === 401 && rejection.config.url !== "/v1/authorize") {
                 var $state = $injector.get('$state');
+                var cookies = $injector.get('$cookies');
+
+                cookies.remove('UID');
                 $state.go('login');
             }
             return $q.reject(rejection);

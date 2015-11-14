@@ -36,6 +36,7 @@ module.exports = function (app) {
                         field: null
                     });
                 }
+
                 if (!user) {
                     res.status(404);
                     res.json({
@@ -53,7 +54,16 @@ module.exports = function (app) {
                                 message: 'Authentication failed. wrong password'
                             }
                         });
+                    } else if (!user.active) {
+                        res.status(400)
+                            .json({
+                                error: {
+                                    code: 'INACTIVE_USER',
+                                    message: 'User is no longer active.'
+                                }
+                            });
                     } else {
+
                         var token = jwt.sign(user, app.get('supersecret'), function () {
                             expiresInMinutes: 2
                         });

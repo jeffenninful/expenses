@@ -20,9 +20,29 @@ module.exports = function (app) {
                         });
                 } else {
                     req.decoded = decoded;
-                    next();
+                    User.findOne({_id: decoded._id, active: true}, function (err, user) {
+                        if (err) {
+                            res.status(500)
+                                .json({
+                                    error: {
+                                        code: 'SERVICE_ERROR'
+                                    }
+                                });
+                        }
+                        if (user) {
+                            next();
+                        } else {
+                            res.status(401)
+                                .json({
+                                    error: {
+                                        code: 'INACTIVE_USER',
+                                        message: 'User is no longer active.'
+                                    }
+                                });
+                        }
+                    })
                 }
-            })
+            });
         } else {
             return res.status(401)
                 .send({
@@ -57,7 +77,7 @@ module.exports = function (app) {
             });
         } else {
             res.json({
-                error : 'UNAUTHORIZED_USER',
+                error: 'UNAUTHORIZED_USER',
                 message: 'Admin priviledges required'
             });
 
@@ -69,20 +89,29 @@ module.exports = function (app) {
         user.save();
         res.status(201);
         res.json({
-            profile: req.user
+            profile: req.user,
+            token: req.headers['x-access-token']
         });
     }
 
     function oneMiddleWare(req, res, next) {
-        if (req.params.id != '123') {
+        if (req.params.id) {
             User.findById(req.params.id, {password: 0, __v: 0}, function (err, user) {
                 if (err) {
-                    res.status(500).send(err);
+                    res.status(500);
+                    res.json({
+                        error: 'SERVICE_ERROR',
+                        message: 'Error finding user'
+                    });
                 } else if (user) {
                     req.user = user;
                     next();
                 } else {
-                    res.status(400).send('user not found');
+                    res.status(400);
+                    res.json({
+                        error: 'NOT_FOUND',
+                        message: 'User not found'
+                    });
                 }
             });
         } else {
@@ -113,7 +142,8 @@ module.exports = function (app) {
                 res.status(500).send(err);
             } else {
                 res.json({
-                    profile: req.user
+                    profile: req.user,
+                    token: req.headers['x-access-token']
                 });
             }
         });
@@ -130,4 +160,5 @@ module.exports = function (app) {
     }
 
     return router;
-};
+}
+;

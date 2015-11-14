@@ -29,7 +29,6 @@
             return $cookies.remove(name);
         }
 
-
         function isLoggedIn() {
             return !!this.getCookie('UID');
         }
@@ -44,11 +43,12 @@
 
             if (user) {
                 defer.resolve(user);
-                return defer.promise;
 
             } else {
-                return makeRequest('GET', '/v1/user/');
+                defer.reject();
+
             }
+            return defer.promise;
         }
 
         function updateProfile(data) {
