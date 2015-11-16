@@ -8,7 +8,6 @@
     function LoginCtrl($state, Auth, Session) {
         var vm = this;
         vm.guest = {};
-        vm.states = ['AA', 'BB', 'CC'];
         vm.register = register;
 
         init();

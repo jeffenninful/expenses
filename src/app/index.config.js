@@ -1,16 +1,17 @@
 (function () {
-      'use strict';
+    'use strict';
 
-      angular
-            .module('expenses')
-            .config(config);
+    angular
+        .module('expenses')
+        .config(config);
 
-      /** @ngInject */
-      function config($logProvider, $httpProvider) {
-            // Enable log
-            $logProvider.debugEnabled(true);
+    /** @ngInject */
+    function config($logProvider, $httpProvider) {
 
-            $httpProvider.interceptors.push('AuthInterceptor');
-      }
+        $logProvider.debugEnabled(true);
+
+        $httpProvider.interceptors.push('AuthInterceptor');
+
+    }
 
 })();

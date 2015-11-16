@@ -6,7 +6,7 @@
         .config(routeConfig);
 
     /** @ngInject */
-    function routeConfig($stateProvider, $urlRouterProvider) {
+    function routeConfig($stateProvider, $urlRouterProvider, $locationProvider) {
         $stateProvider
             .state('account', {
                 url: '/account',
@@ -44,6 +44,7 @@
                 title: 'Service Error'
             });
 
+        $locationProvider.html5Mode(true);
         $urlRouterProvider.otherwise('/');
     }
 

@@ -6,12 +6,14 @@
         .controller('NavbarCtrl', NavbarCtrl);
 
     /** @ngInject */
-    function NavbarCtrl($state, Auth, Session) {
+    function NavbarCtrl($state, Auth, Session, toastr) {
         var vm = this;
-        vm.guest = {};
         vm.login = login;
         vm.logout = logout;
         vm.isLoggedIn = isLoggedIn;
+        vm.navigate = navigate;
+
+        vm.guest = {};
         vm.items = [
             'Settings 1',
             'Settings 2'
@@ -30,6 +32,10 @@
                 Auth.login(vm.guest).then(function () {
                     $state.go('home');
                 }, function (error) {
+                    toastr.error('Your credentials are gone', 'Error',{
+                        closeButton: true,
+                        timeOut : 555555555
+                    });
                     console.log('Error encountered.', error);
                 });
             } else {
@@ -43,5 +49,11 @@
                 $state.go('login');
             });
         }
+
+
+        function navigate(route) {
+            $state.go(route);
+        }
+
     }
 })();

@@ -11,14 +11,6 @@
         var vm = this;
         vm.updateProfile = updateProfile;
 
-        Session.getProfile().then(function (data) {
-            vm.guest = data.profile;
-        }, function () { });
-
-        Dao.getLocation().then(function (data) {
-            vm.department = data;
-        }, function () { });
-
         init();
 
         function init() {
@@ -26,6 +18,14 @@
                 $state.go('login');
             }
         }
+
+        Session.getProfile().then(function (data) {
+            vm.guest = data.profile;
+        }, function () { });
+
+        Dao.getLocation().then(function (data) {
+            vm.department = data;
+        }, function () { });
 
         function updateProfile() {
             Session.updateProfile(vm.guest).then(function (response) {

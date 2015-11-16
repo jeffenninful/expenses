@@ -75,7 +75,7 @@
                 vm.reset();
                 form.$setUntouched();
                 form.$setPristine();
-            }else{
+            } else {
                 console.log('form has errors ');
             }
         }

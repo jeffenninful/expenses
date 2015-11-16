@@ -10,7 +10,7 @@
         $log.debug('runBlock end');
 
         $rootScope.$on('$stateChangeStart', function (event, toState) {
-            $rootScope.pageTitle = 'App - ' + toState.title;
+            $rootScope.pageTitle = 'Expenses - ' + toState.title;
         });
     }
 

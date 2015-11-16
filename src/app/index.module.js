@@ -9,7 +9,8 @@
       'ngSanitize',
       'ngMessages',
       'ui.router',
-      'ui.bootstrap'
+      'ui.bootstrap',
+      'toastr'
       ]);
 
 })();
