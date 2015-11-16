@@ -4,6 +4,7 @@ var bCrypt = require('bcrypt-nodejs');
 
 module.exports = function (app) {
     var User = require('../model/user');
+    var Session = require('../model/session');
     var router = express.Router();
 
     router.route('/')
@@ -35,6 +36,7 @@ module.exports = function (app) {
                         field: null
                     });
                 }
+
                 if (!user) {
                     res.status(404);
                     res.json({
@@ -52,15 +54,34 @@ module.exports = function (app) {
                                 message: 'Authentication failed. wrong password'
                             }
                         });
+                    } else if (!user.active) {
+                        res.status(400)
+                            .json({
+                                error: {
+                                    code: 'INACTIVE_USER',
+                                    message: 'User is no longer active.'
+                                }
+                            });
                     } else {
+
                         var token = jwt.sign(user, app.get('supersecret'), function () {
                             expiresInMinutes: 2
+                        });
+                        var session = new Session();
+                        session._id = user._id;
+                        session.token = token;
+                        session.expiration = 180;
+
+                        session.save(function (err) {
+                            if (err) {
+                                console.log('err', err);
+                            }
                         });
                         var modifiedUser = JSON.parse(JSON.stringify(user));
                         delete modifiedUser.password;
                         res.status(200);
                         res.json({
-                            user: modifiedUser,
+                            profile: modifiedUser,
                             token: token
                         });
                     }

@@ -2,22 +2,27 @@
     'use strict';
 
     angular.module('expenses')
-        .factory('Auth', auth);
+        .factory('Dao', dao);
 
     /** @ngInject */
-    function auth($http, $q, Session) {
+    function dao($http, $q) {
 
         return {
-            login: login,
-            register: register
+            getLocation: getLocation,
+            getExpenseCategory: getExpenseCategory,
+            saveExpense: saveExpense
         };
 
-        function login(data) {
-            return makeRequest('POST', '/v1/authorize', data);
+        function getLocation() {
+            return makeRequest('GET', 'v1/department');
         }
 
-        function register(data) {
-            return makeRequest('POST', '/v1/register', data);
+        function saveExpense() {
+            return makeRequest('POST', 'v1/expense');
+        }
+
+        function getExpenseCategory() {
+            return makeRequest('GET', 'v1/category');
         }
 
         function makeRequest(method, url, data) {
@@ -26,17 +31,13 @@
                 method: method,
                 url: url,
                 data: angular.toJson(data)
-
             }).then(function (response) {
-                Session.setCookie('UID', response.data);
                 deferred.resolve(response.data);
-
             }, function (error) {
                 deferred.reject(error.data);
             });
-
             return deferred.promise;
         }
-
     }
-})();
+})
+();

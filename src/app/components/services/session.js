@@ -5,45 +5,55 @@
         .factory('Session', session);
 
     /** @ngInject */
-    function session($http, $q) {
+    function session($cookies, $http, $q) {
 
         return {
-            getUser: getUser,
-            reloadUser: reloadUser,
             logout: logout,
             isLoggedIn: isLoggedIn,
-            saveUser: saveUser
+            getCookie: getCookie,
+            setCookie: setCookie,
+            deleteCookie: deleteCookie,
+            getProfile: getProfile,
+            updateProfile: updateProfile
         };
 
+        function setCookie(name, value) {
+            $cookies.putObject(name, value);
+        }
+
+        function getCookie(name) {
+            return $cookies.getObject(name);
+        }
+
+        function deleteCookie(name) {
+            return $cookies.remove(name);
+        }
+
         function isLoggedIn() {
-            return !!localStorage.getItem('authUID');
+            return !!this.getCookie('UID');
         }
 
-        function saveUser(data) {
-            return localStorage.setItem('authUID', JSON.stringify(data));
+        function logout() {
+            return makeRequest('POST', 'v1/logout');
         }
 
-        function getUser() {
+        function getProfile() {
             var defer = $q.defer();
-            var data = JSON.parse(localStorage.getItem('authUID'));
-            if (data) {
-                defer.resolve(data);
+            var user = this.getCookie('UID');
+
+            if (user) {
+                defer.resolve(user);
+
             } else {
-                defer.reject({error: 'No user found'});
+                defer.reject();
+
             }
             return defer.promise;
         }
 
-        function logout() {
-            var defer = $q.defer();
-            localStorage.removeItem('authUID');
-            defer.resolve();
-            return defer.promise;
-        }
-
-        function reloadUser(data) {
-            //TODO: Supply user id
-            makeRequest('GET', '/v1/user/:id', data);
+        function updateProfile(data) {
+            var user = this.getCookie('UID');
+            return makeRequest('PUT', '/v1/user/'+ user.profile._id, data);
         }
 
         function makeRequest(method, url, data) {
@@ -60,5 +70,4 @@
             return deferred.promise;
         }
     }
-})
-();
+})();

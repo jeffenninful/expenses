@@ -2,11 +2,12 @@ var express = require('express');
 var jwt = require('jsonwebtoken');
 
 module.exports = function (app) {
+    var Department = require('../model/department');
     var router = express.Router();
-    var Expense = require('../model/expense');
 
     router.use(function (req, res, next) {
         var token = req.headers['x-access-token'] || req.body.token || req.query.token;
+
         if (token) {
             jwt.verify(token, app.get('supersecret'), function (err, decoded) {
                 if (err) {
@@ -33,6 +34,7 @@ module.exports = function (app) {
         }
     });
 
+
     router.use('/:id', oneMiddleWare);
 
     router.route('/')
@@ -45,9 +47,9 @@ module.exports = function (app) {
         .patch(patchOne)
         .delete(removeOne);
 
-
+    //accessible to admin. Check for special token before querying
     function getAll(req, res) {
-        Expense.find(function (err, list) {
+        Department.find(function (err, list) {
             if (err) {
                 res.status(500).send(err);
             } else {
@@ -57,42 +59,39 @@ module.exports = function (app) {
     }
 
     function postOne(req, res) {
-        console.log(req);
-
-        var user = new Expense(req.body);
-        user.save();
-        res.status(201).send(user);
+        var dept = new Department(req.body);
+        dept.save();
+        res.status(201).send(dept);
     }
 
     function oneMiddleWare(req, res, next) {
-        Expense.findById(req.params.id, function (err, user) {
+        //if (req.params.id !== '123') {
+        Department.findById(req.params.id, function (err, dept) {
             if (err) {
                 res.status(500).send(err);
-            } else if (user) {
-                req.user = user;
+            } else if (dept) {
+                req.dept = dept;
                 next();
             } else {
-                res.status(400).send('user not found');
+                res.status(400).send('dept not found');
             }
         });
     }
 
     function getOne(req, res) {
-        res.json(req.user);
+        res.json(req.dept);
     }
 
     function putOne(req, res) {
-        req.user.firstName = req.body.firstName;
-        req.user.middleName = req.body.middleName;
-        req.user.lastName = req.body.lastName;
-        req.user.dob = req.body.dob;
-        req.user.active = req.body.active;
+        req.dept.code = req.body.code;
+        req.dept.name = req.body.name;
+        req.dept.active = req.body.active;
 
-        req.user.save(function (err) {
+        req.dept.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.dept);
             }
         })
 
@@ -103,23 +102,23 @@ module.exports = function (app) {
             delete req.body._id;
         }
         for (var prop in req.body) {
-            req.user[prop] = req.body[prop];
+            req.dept[prop] = req.body[prop];
         }
-        req.user.save(function (err) {
+        req.dept.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.dept);
             }
         });
     }
 
     function removeOne(req, res) {
-        req.user.remove(function (err) {
+        req.dept.remove(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.status(204).send('user removed');
+                res.status(204).send('location removed');
             }
         });
     }

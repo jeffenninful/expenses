@@ -1,96 +1,110 @@
 var express = require('express');
+var jwt = require('jsonwebtoken');
 
-module.exports = function () {
-  var router = express.Router();
-  var User = require('../model/category');
-  router.use('/:userId', oneMiddleWare);
+module.exports = function (app) {
+    var router = express.Router();
+    var Category = require('../model/category');
 
-  router.route('/')
-    .get(getAll)
-    .post(postOne);
+    router.use(function (req, res, next) {
+        var token = req.headers['x-access-token'] || req.body.token || req.query.token;
 
-  router.route('/:userId')
-    .get(getOne)
-    .put(putOne)
-    .patch(patchOne)
-    .delete(removeOne);
-
-
-  function getAll(req, res) {
-    User.find(function (err, list) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json(list);
-      }
+        if (token) {
+            jwt.verify(token, app.get('supersecret'), function (err, decoded) {
+                if (err) {
+                    return res.status(401)
+                        .json({
+                            error: {
+                                code: 'INVALID_TOKEN',
+                                message: 'Access token verification failure'
+                            }
+                        });
+                } else {
+                    req.decoded = decoded;
+                    next()
+                }
+            })
+        } else {
+            return res.status(401)
+                .send({
+                    error: {
+                        code: 'INVALID_TOKEN',
+                        message: 'No access token provided'
+                    }
+                });
+        }
     });
-  }
 
-  function postOne(req, res) {
-    var user = new User(req.body);
-    user.save();
-    res.status(201).send(user);
-  }
+    router.use('/:id', oneMiddleWare);
 
-  function oneMiddleWare(req, res, next) {
-    User.findById(req.params.userId, function (err, user) {
-      if (err) {
-        res.status(500).send(err);
-      } else if (user) {
-        req.user = user;
-        next();
-      } else {
-        res.status(400).send('user not found');
-      }
-    });
-  }
+    router.route('/')
+        .get(getAll)
+        .post(postOne);
 
-  function getOne(req, res) {
-    res.json(req.user);
-  }
+    router.route('/:id')
+        .get(getOne)
+        .put(patchOne)
+        .patch(patchOne)
+        .delete(removeOne);
 
-  function putOne(req, res) {
-    req.user.firstName = req.body.firstName;
-    req.user.middleName = req.body.middleName;
-    req.user.lastName = req.body.lastName;
-    req.user.dob = req.body.dob;
-    req.user.active = req.body.active;
 
-    req.user.save(function (err) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json(req.user);
-      }
-    })
-
-  }
-
-  function patchOne(req, res) {
-    if (req.body._id) {
-      delete req.body._id;
+    function getAll(req, res) {
+        Category.find(function (err, list) {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                res.json(list);
+            }
+        });
     }
-    for (var prop in req.body) {
-      req.user[prop] = req.body[prop];
+
+    function postOne(req, res) {
+        var kind = new Category(req.body);
+        kind.save();
+        res.status(201).send(kind);
     }
-    req.user.save(function (err) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.json(req.user);
-      }
-    });
-  }
 
-  function removeOne(req, res) {
-    req.user.remove(function (err) {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        res.status(204).send('user removed');
-      }
-    });
-  }
+    function oneMiddleWare(req, res, next) {
+        Category.findById(req.params.id, function (err, kind) {
+            if (err) {
+                res.status(500).send(err);
+            } else if (kind) {
+                req.kind = kind;
+                next();
+            } else {
+                res.status(400).send('category not found');
+            }
+        });
+    }
 
-  return router;
+    function getOne(req, res) {
+        res.json(req.kind);
+    }
+
+    function patchOne(req, res) {
+        if (req.body._id) {
+            delete req.body._id;
+        }
+        for (var prop in req.body) {
+            req.kind[prop] = req.body[prop];
+        }
+        req.kind.save(function (err) {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                res.json(req.kind);
+            }
+        });
+    }
+
+    function removeOne(req, res) {
+        req.kind.remove(function (err) {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                res.status(204).send('category removed');
+            }
+        });
+    }
+
+    return router;
 };

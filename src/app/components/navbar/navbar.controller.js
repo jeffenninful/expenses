@@ -13,12 +13,12 @@
         vm.logout = logout;
         vm.isLoggedIn = isLoggedIn;
         vm.items = [
-            'Settings',
-            'Edit Profile'
+            'Settings 1',
+            'Settings 2'
         ];
 
-        Session.getUser().then(function (data) {
-            vm.name = data.user.firstName;
+        Session.getProfile().then(function (data) {
+            vm.name = data.profile.firstName;
         });
 
         function isLoggedIn() {
@@ -39,6 +39,7 @@
 
         function logout() {
             Session.logout().then(function () {
+                Session.deleteCookie('UID');
                 $state.go('login');
             });
         }

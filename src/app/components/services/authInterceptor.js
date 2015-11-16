@@ -14,17 +14,17 @@
 
         function request(config) {
             var session = $injector.get('Session');
-            session.getUser().then(function (data) {
-                config.headers['x-access-id'] = data.user._id;
-                config.headers['x-access-token'] = data.token;
-            });
-
+            var token = session.getCookie('UID') ? session.getCookie('UID').token : '';
+            config.headers['x-access-token'] = token;
             return config;
         }
 
         function responseError(rejection) {
             if (rejection.status === 401 && rejection.config.url !== "/v1/authorize") {
                 var $state = $injector.get('$state');
+                var cookies = $injector.get('$cookies');
+
+                cookies.remove('UID');
                 $state.go('login');
             }
             return $q.reject(rejection);
