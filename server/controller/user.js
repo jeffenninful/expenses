@@ -1,58 +1,11 @@
 var express = require('express');
-var jwt = require('jsonwebtoken');
 
 module.exports = function (app) {
-    var User = require('../model/user');
     var router = express.Router();
+    var authorization = require('./../helpers/middleWare');
+    var User = require('../model/user');
 
-    router.use(function (req, res, next) {
-        var token = req.headers['x-access-token'] || req.body.token || req.query.token;
-
-        if (token) {
-            jwt.verify(token, app.get('supersecret'), function (err, decoded) {
-                if (err) {
-                    return res.status(401)
-                        .json({
-                            error: {
-                                code: 'INVALID_TOKEN',
-                                message: 'Access token verification failure'
-                            }
-                        });
-                } else {
-                    req.decoded = decoded;
-                    User.findOne({_id: decoded._id, active: true}, function (err, user) {
-                        if (err) {
-                            res.status(500)
-                                .json({
-                                    error: {
-                                        code: 'SERVICE_ERROR'
-                                    }
-                                });
-                        }
-                        if (user) {
-                            next();
-                        } else {
-                            res.status(401)
-                                .json({
-                                    error: {
-                                        code: 'INACTIVE_USER',
-                                        message: 'User is no longer active.'
-                                    }
-                                });
-                        }
-                    })
-                }
-            });
-        } else {
-            return res.status(401)
-                .send({
-                    error: {
-                        code: 'INVALID_TOKEN',
-                        message: 'No access token provided'
-                    }
-                });
-        }
-    });
+    router.use(authorization);
 
     router.use('/:id', oneMiddleWare);
 

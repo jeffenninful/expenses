@@ -35,7 +35,7 @@
                     toastr.error('Your credentials are invalid', 'Error');
                 });
             } else {
-                toastr.error('Email and Password are required', 'Error');
+                toastr.error('Email and Password is required', 'Error');
             }
         }
 

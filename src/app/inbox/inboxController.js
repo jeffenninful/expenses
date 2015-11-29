@@ -9,10 +9,10 @@
 
     angular
         .module('expenses')
-        .controller('NotificationCtrl', NotificationCtrl);
+        .controller('InboxCtrl', InboxCtrl);
 
     /* @ngInject */
-    function NotificationCtrl($state, Session) {
+    function InboxCtrl($state, Session) {
         var vm = this;
 
         init();

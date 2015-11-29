@@ -16,7 +16,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav" ng-if="vm.isLoggedIn()">
                 <li class="active"><a href="#" ng-click="vm.navigate('home')">Home <span class="sr-only">(current)</span></a></li>
-                <li><a href="#" ng-click="vm.navigate('notification')">Inbox <span class="badge"></span></a></li>
+                <li><a href="#" ng-click="vm.navigate('inbox')">Inbox <span class="badge"></span></a></li>
             </ul>
             <form name="loginForm" class="navbar-form navbar-right" novalidate ng-submit="vm.login(loginForm)"
                   ng-if="!vm.isLoggedIn()">

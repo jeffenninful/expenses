@@ -1,37 +1,14 @@
 var express = require('express');
-var jwt = require('jsonwebtoken');
+var fs = require('fs');
+var busboy = require('connect-busboy');
 
 module.exports = function (app) {
+    app.use(busboy());
     var router = express.Router();
+    var authorization = require('./../helpers/middleWare');
     var Expense = require('../model/expense');
 
-    router.use(function (req, res, next) {
-        var token = req.headers['x-access-token'] || req.body.token || req.query.token;
-        if (token) {
-            jwt.verify(token, app.get('supersecret'), function (err, decoded) {
-                if (err) {
-                    return res.status(401)
-                        .json({
-                            error: {
-                                code: 'INVALID_TOKEN',
-                                message: 'Access token verification failure'
-                            }
-                        });
-                } else {
-                    req.decoded = decoded;
-                    next()
-                }
-            })
-        } else {
-            return res.status(401)
-                .send({
-                    error: {
-                        code: 'INVALID_TOKEN',
-                        message: 'No access token provided'
-                    }
-                });
-        }
-    });
+    router.use(authorization);
 
     router.use('/:id', oneMiddleWare);
 
@@ -57,6 +34,17 @@ module.exports = function (app) {
     }
 
     function postOne(req, res) {
+        //req.pipe(req.busboy);
+
+        //req.busboy.on('file', function (fieldname, file, filename) {
+        //req.body.receipt = {
+        //    'data': file,
+        //    'contentType': 'image/png',
+        //    'fileName' : filename
+        //};
+        //
+        //console.log(' req body', req.body);
+        //});
 
         var expense = new Expense(req.body);
         expense.save();

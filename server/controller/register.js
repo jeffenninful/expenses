@@ -59,7 +59,7 @@ module.exports = function (app) {
                         });
                     } else {
                         var token = jwt.sign(user, app.get('supersecret'), function () {
-                            expiresInMinutes: 2
+                            expiresInMinutes: 60
                         });
                         var session = new Session();
                         session._id = user._id;

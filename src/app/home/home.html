@@ -21,7 +21,7 @@
                                is-open="vm.date.opened"
                                ng-click="vm.date.open($event)"
                                datepicker-options="vm.dateOptions"
-                               ng-required="true" close-text="Close"/>
+                               close-text="Close"/>
 
                         <span class="input-group-btn">
                             <button type="button" class="btn btn-default" ng-click="vm.date.open($event)">
@@ -59,16 +59,14 @@
                     </div>
                 </div>
             </div>
-
         </div>
-
 
         <div class="form-group row">
             <div class="col-md-6">
                 <label class="col-md-4 control-label">Category</label>
 
                 <div class="col-md-8">
-                    <select class="form-control" name="category" required
+                    <select class="form-control" name="category"
                             ng-options="item.name as item.name for item in vm.expenseCategory"
                             ng-model="vm.expense.category" ng-change="vm.calculateTotal()">
                         <option value="">Select</option>
@@ -85,9 +83,8 @@
                 <label class="col-md-4 control-label">Billable</label>
 
                 <div class="col-md-8">
-
                     <select class="form-control" name="billable" ng-model="vm.expense.billable"
-                            ng-options="item.value as item.name for item in vm.billingOptions" required>
+                            ng-options="item.value as item.name for item in vm.billingOptions" >
                         <option value=""> Select</option>
                     </select>
 
@@ -97,7 +94,6 @@
                     </div>
                 </div>
             </div>
-
         </div>
 
         <div class="form-group row">
@@ -139,6 +135,7 @@
                 <input type="file" class="col-md-8" ng-model="vm.expense.receipt"/>
             </div>
         </div>
+
         <div class="form-group row">
             <input type="submit" name="submit" class="col-md-2 col-md-offset-5 btn btn-primary" value="Submit"/>
         </div>

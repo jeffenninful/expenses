@@ -1,16 +1,17 @@
-(function() {
-  'use strict';
+(function () {
+    'use strict';
 
-  angular
-    .module('expenses', [
-      'ngAnimate',
-      'ngCookies',
-      'ngTouch',
-      'ngSanitize',
-      'ngMessages',
-      'ui.router',
-      'ui.bootstrap',
-      'toastr'
-      ]);
+    angular
+        .module('expenses', [
+            'ngAnimate',
+            'ngCookies',
+            'ngTouch',
+            'ngSanitize',
+            'ngMessages',
+            'ui.router',
+            'ui.bootstrap',
+            'toastr',
+            'ngFileUpload'
+        ]);
 
 })();

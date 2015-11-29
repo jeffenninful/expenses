@@ -29,12 +29,19 @@
                 controllerAs: 'vm',
                 title: 'Login'
             })
-            .state('notification', {
-                url: '/notification',
-                templateUrl: 'app/notification/notification.html',
-                controller: 'NotificationCtrl',
+            .state('inbox', {
+                url: '/inbox',
+                templateUrl: 'app/inbox/inbox.html',
+                controller: 'InboxCtrl',
                 controllerAs: 'vm',
-                title: 'Notification'
+                title: 'Inbox'
+            })
+            .state('upload', {
+                url: '/upload',
+                templateUrl: 'app/upload/inbox.html',
+                controller: 'UploadCtrl',
+                controllerAs: 'vm',
+                title: 'upload'
             })
             .state('serviceError', {
                 url: '/serviceError',
@@ -45,7 +52,7 @@
             });
 
         $locationProvider.html5Mode(true);
-        $urlRouterProvider.otherwise('/');
+        $urlRouterProvider.otherwise('/upload');
     }
 
 })();

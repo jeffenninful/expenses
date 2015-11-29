@@ -12,7 +12,7 @@
         .controller('HomeCtrl', HomeCtrl);
 
     /* @ngInject */
-    function HomeCtrl($state, $filter, Session, Dao, toastr) {
+    function HomeCtrl($state, $filter, Session, Dao,toastr) {
         var vm = this;
         vm.expense = {};
         vm.expenseTotal = 0;
@@ -63,6 +63,7 @@
 
         function saveExpense(form) {
             if (form.$valid) {
+                console.log('sending expense ',vm.expense);
                 Dao.saveExpense(vm.expense).then(function (data) {
                     console.log('expense saved', data);
                     vm.expense = {};
