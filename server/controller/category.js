@@ -2,11 +2,10 @@ var express = require('express');
 
 module.exports = function (app) {
     var router = express.Router();
-    var authorization = require('./../helpers/middleWare');
+    var verifyToken = require('./../helpers/verifyToken');
     var Category = require('../model/category');
 
-    router.use(authorization);
-
+    router.use(verifyToken);
     router.use('/:id', oneMiddleWare);
 
     router.route('/')
@@ -44,7 +43,7 @@ module.exports = function (app) {
                 req.kind = kind;
                 next();
             } else {
-                res.status(400).send('category not found');
+                res.status(400).send('Category not found');
             }
         });
     }
@@ -74,7 +73,7 @@ module.exports = function (app) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.status(204).send('category removed');
+                res.status(204).send('Category Removed');
             }
         });
     }

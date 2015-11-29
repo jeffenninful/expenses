@@ -2,10 +2,10 @@ var express = require('express');
 
 module.exports = function (app) {
     var router = express.Router();
-    var authorization = require('./../helpers/middleWare');
+    var verifyToken = require('./../helpers/verifyToken');
     var Department = require('../model/department');
 
-    router.use(authorization);
+    router.use(verifyToken);
 
     router.use('/:id', oneMiddleWare);
 

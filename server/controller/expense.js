@@ -5,10 +5,10 @@ var busboy = require('connect-busboy');
 module.exports = function (app) {
     app.use(busboy());
     var router = express.Router();
-    var authorization = require('./../helpers/middleWare');
+    var verifyToken = require('./../helpers/verifyToken');
     var Expense = require('../model/expense');
 
-    router.use(authorization);
+    router.use(verifyToken);
 
     router.use('/:id', oneMiddleWare);
 

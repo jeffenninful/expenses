@@ -3,10 +3,10 @@ var jwt = require('jsonwebtoken');
 
 module.exports = function (app) {
     var router = express.Router();
-    var authorization = require('./../helpers/middleWare');
+    var verifyToken = require('./../helpers/verifyToken');
     var Project = require('../model/project');
 
-    router.use(authorization);
+    router.use(verifyToken);
 
     router.use('/:id', oneMiddleWare);
     router.route('/')

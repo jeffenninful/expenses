@@ -58,7 +58,6 @@ module.exports = function () {
     );
 
     app.listen(9000, function(){
-        console.log('server started on port 9000');
+        console.log('Server is running on port 9000');
     });
-
 };
