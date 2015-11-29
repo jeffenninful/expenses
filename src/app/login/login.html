@@ -7,7 +7,7 @@
       <label>First Name</label>
       <input type="text" class="form-control" name="firstName" ng-model="vm.guest.firstName" required/>
 
-      <div ng-messages="registerForm.firstName.$error"
+      <div ng-messages="registerForm.firstName.$error" class="text-danger"
            ng-show="registerForm.firstName.$touched || registerForm.$submitted">
         <p ng-message="required"> First name is required</p>
       </div>
@@ -17,7 +17,7 @@
       <label> Last Name </label>
       <input type="text" class="form-control" name="lastName" ng-model="vm.guest.lastName" required/>
 
-      <div ng-messages="registerForm.lastName.$error"
+      <div ng-messages="registerForm.lastName.$error" class="text-danger"
            ng-show="registerForm.lastName.$touched || registerForm.$submitted">
         <p ng-message="required"> Last name is required</p>
       </div>
@@ -27,7 +27,7 @@
       <label>Email </label>
       <input type="text" class="form-control"  name="email" ng-model="vm.guest.email" required ng-pattern="/^.+@.+\..+$/"/>
 
-      <div ng-messages="registerForm.email.$error"
+      <div ng-messages="registerForm.email.$error" class="text-danger"
            ng-show="registerForm.email.$touched || registerForm.$submitted">
         <p ng-message="required"> Email is required</p>
         <p ng-message="pattern"> Email is invalid</p>
@@ -38,7 +38,7 @@
       <label>Password </label>
       <input type="password" class="form-control" name="password" ng-model="vm.guest.password" required ng-minlength="5" />
 
-      <div ng-messages="registerForm.password.$error"
+      <div ng-messages="registerForm.password.$error" class="text-danger"
            ng-show="registerForm.password.$touched || registerForm.$submitted">
         <p ng-message="required"> Password is required</p>
         <p ng-message="minlength"> Password is too short</p>
@@ -50,15 +50,15 @@
       <input type="password" class="form-control" name="verifyPassword" ng-model="vm.verifyPassword" required
              compare = "vm.guest.password"/>
 
-      <div ng-messages="registerForm.verifyPassword.$error"
+      <div ng-messages="registerForm.verifyPassword.$error" class="text-danger"
            ng-show="registerForm.verifyPassword.$touched || registerForm.$submitted">
         <p ng-message="required"> Confirm your password</p>
         <p ng-message="compare"> Passwords don't match</p>
       </div>
     </div>
 
-    <div class="row">
-      <button type="submit" class=" btn btn-primary"> Register </button>
+    <div class="form-group">
+      <button type="submit" class=" btn btn-primary"> Sign Up </button>
     </div>
   </form>
 </div>
