@@ -1,0 +1,28 @@
+<div ng-include="'app/components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <div class="row">
+        <p class="lead text-center">Inbox</p>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <tr>
+                <th>Date</th>
+                <th>Subject</th>
+                <th>Message</th>
+            </tr>
+            <tr ng-repeat="item in vm.inbox" ng-if="vm.inbox.length > 0">
+                <td>
+                    {{item.date}}
+                </td>
+                <td>{{item.subject}}</td>
+                <td>{{item.message}}</td>
+            </tr>
+            <tr ng-if="!!vm.inbox.length == 0" class="emptyInbox">
+                <th colspan="3">No messages in your Inbox</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+

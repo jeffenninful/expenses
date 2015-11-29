@@ -57,42 +57,43 @@ module.exports = function (app) {
     }
 
     function postOne(req, res) {
-        console.log(req);
 
-        var user = new Expense(req.body);
-        user.save();
-        res.status(201).send(user);
+        var expense = new Expense(req.body);
+        expense.save();
+        res.status(201).send(expense);
     }
 
     function oneMiddleWare(req, res, next) {
-        Expense.findById(req.params.id, function (err, user) {
+        Expense.findById(req.params.id, function (err, expense) {
             if (err) {
                 res.status(500).send(err);
-            } else if (user) {
-                req.user = user;
+            } else if (expense) {
+                req.expense = expense;
                 next();
             } else {
-                res.status(400).send('user not found');
+                res.status(400).send('Expense not found');
             }
         });
     }
 
     function getOne(req, res) {
-        res.json(req.user);
+        res.json(req.expense);
     }
 
     function putOne(req, res) {
-        req.user.firstName = req.body.firstName;
-        req.user.middleName = req.body.middleName;
-        req.user.lastName = req.body.lastName;
-        req.user.dob = req.body.dob;
-        req.user.active = req.body.active;
+        req.expense.date = req.body.date;
+        req.expense.category = req.body.category;
+        req.expense.description = req.body.description;
+        req.expense.amount = req.body.amount;
+        req.expense.receipt = req.body.receipt;
+        req.expense.billable = req.body.billable;
+        req.expense.projectCode = req.body.projectCode;
 
-        req.user.save(function (err) {
+        req.expense.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.expense);
             }
         })
 
@@ -103,23 +104,23 @@ module.exports = function (app) {
             delete req.body._id;
         }
         for (var prop in req.body) {
-            req.user[prop] = req.body[prop];
+            req.expense[prop] = req.body[prop];
         }
-        req.user.save(function (err) {
+        req.expense.save(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.json(req.user);
+                res.json(req.expense);
             }
         });
     }
 
     function removeOne(req, res) {
-        req.user.remove(function (err) {
+        req.expense.remove(function (err) {
             if (err) {
                 res.status(500).send(err);
             } else {
-                res.status(204).send('user removed');
+                res.status(204).send('expense removed');
             }
         });
     }

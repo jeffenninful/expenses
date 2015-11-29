@@ -28,11 +28,16 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
 }
 .toast-top-right {
     top: 55px;
-    right: 28px;
+    right: auto;
 }
 
 .navbar{
     border-radius: 0;
+}
+
+.table .emptyInbox th{
+    line-height:60px;
+    text-align : center;
 }
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject

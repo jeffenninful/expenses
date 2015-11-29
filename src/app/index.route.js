@@ -15,20 +15,6 @@
                 controllerAs: 'vm',
                 title: 'My Account'
             })
-            .state('login', {
-                url: '/',
-                templateUrl: 'app/login/login.html',
-                controller: 'LoginCtrl',
-                controllerAs: 'vm',
-                title: 'Login'
-            })
-            .state('expense', {
-                url: '/expense',
-                templateUrl: 'app/expense/expense.html',
-                controller: 'ExpenseCtrl',
-                controllerAs: 'vm',
-                title: 'Expenses'
-            })
             .state('home', {
                 url: '/home',
                 templateUrl: 'app/home/home.html',
@@ -36,9 +22,23 @@
                 controllerAs: 'vm',
                 title: 'Home'
             })
+            .state('login', {
+                url: '/',
+                templateUrl: 'app/login/login.html',
+                controller: 'LoginCtrl',
+                controllerAs: 'vm',
+                title: 'Login'
+            })
+            .state('notification', {
+                url: '/notification',
+                templateUrl: 'app/notification/notification.html',
+                controller: 'NotificationCtrl',
+                controllerAs: 'vm',
+                title: 'Notification'
+            })
             .state('serviceError', {
                 url: '/serviceError',
-                templateUrl: 'app/serviceError/error.html',
+                templateUrl: 'app/serviceError/serviceError.html',
                 controller: 'ServiceErrorCtrl',
                 controllerAs: 'vm',
                 title: 'Service Error'

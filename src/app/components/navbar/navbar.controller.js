@@ -31,15 +31,11 @@
             if (form.$valid) {
                 Auth.login(vm.guest).then(function () {
                     $state.go('home');
-                }, function (error) {
-                    toastr.error('Your credentials are gone', 'Error',{
-                        closeButton: true,
-                        timeOut : 555555555
-                    });
-                    console.log('Error encountered.', error);
+                }, function () {
+                    toastr.error('Your credentials are invalid', 'Error');
                 });
             } else {
-                console.log("Errors in form");
+                toastr.error('Email and Password are required', 'Error');
             }
         }
 

@@ -9,10 +9,10 @@
 
     angular
         .module('expenses')
-        .controller('ExpenseCtrl', ExpenseCtrl);
+        .controller('HomeCtrl', HomeCtrl);
 
     /* @ngInject */
-    function ExpenseCtrl($state, $filter, Session, Dao) {
+    function HomeCtrl($state, $filter, Session, Dao) {
         var vm = this;
 
         init();

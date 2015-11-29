@@ -17,8 +17,8 @@
             return makeRequest('GET', 'v1/department');
         }
 
-        function saveExpense() {
-            return makeRequest('POST', 'v1/expense');
+        function saveExpense(data) {
+            return makeRequest('POST', 'v1/expense', data);
         }
 
         function getExpenseCategory() {
