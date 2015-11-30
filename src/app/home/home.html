@@ -84,7 +84,7 @@
 
                 <div class="col-md-8">
                     <select class="form-control" name="billable" ng-model="vm.expense.billable"
-                            ng-options="item.value as item.name for item in vm.billingOptions" >
+                            ng-options="item.value as item.name for item in vm.billingOptions">
                         <option value=""> Select</option>
                     </select>
 
@@ -130,9 +130,15 @@
         </div>
         <div class="form-group row">
             <div class="col-md-12">
-                <label class="col-md-2 text-right">Attachment</label>
+                <label class="col-md-2 text-right">Receipts</label>
 
-                <input type="file" class="col-md-8" ng-model="vm.expense.receipt"/>
+                <div class="col-md-10">
+                    <input type="file" ng-model="vm.receipt" name="receipt" ngf-select="" accept="image/*">
+                    <img ngf-src="vm.receipt" class="thumb">
+                    <span class="progress" ng-show="vm.receipt.progress >= 0">
+                        <div style="width:{{vm.receipt.progress}}%" ng-bind="vm.receipt.progress + '%'" class="ng-binding"></div>
+                    </span>
+                </div>
             </div>
         </div>
 

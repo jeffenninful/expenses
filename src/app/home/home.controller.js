@@ -1,5 +1,6 @@
 (function () {
     'use strict';
+
     /**
      * @ngdoc: function
      * @name: timesheet.controller:HomeCtrl
@@ -12,12 +13,15 @@
         .controller('HomeCtrl', HomeCtrl);
 
     /* @ngInject */
-    function HomeCtrl($state, $filter, Session, Dao,toastr) {
+    function HomeCtrl($state, $filter, Session, Dao, Upload, toastr) {
         var vm = this;
         vm.expense = {};
         vm.expenseTotal = 0;
         vm.milageRate = 0.55;
         vm.currentMonth = $filter('date')(new Date(), 'MMMM');
+        vm.cancel = cancel;
+        vm.saveExpense = saveExpense;
+        vm.calculateTotal = calculateTotal;
 
         init();
 
@@ -30,7 +34,7 @@
         Dao.getExpenseCategory().then(function (data) {
             vm.expenseCategory = data;
         });
-        Session.getProfile().then(function(data){
+        Session.getProfile().then(function (data) {
             vm.expense.user = data.profile._id.toString();
         });
 
@@ -48,12 +52,8 @@
         ];
 
 
-        vm.cancel = cancel;
-        vm.saveExpense = saveExpense;
-        vm.calculateTotal = calculateTotal;
-
-
         function openCalender() {
+
             vm.date.opened = true;
         }
 
@@ -63,9 +63,15 @@
 
         function saveExpense(form) {
             if (form.$valid) {
-                console.log('sending expense ',vm.expense);
-                Dao.saveExpense(vm.expense).then(function (data) {
-                    console.log('expense saved', data);
+                if (vm.receipt) {
+                    vm.expense.file = vm.receipt;
+                }
+
+                Upload.upload({
+                    url: 'v1/expense',
+                    data: vm.expense
+                }).then(function () {
+                    vm.receipt = '';
                     vm.expense = {};
                     vm.expenseTotal = 0;
                     form.$setUntouched();
@@ -89,5 +95,19 @@
             vm.expenseTotal = isNaN(total) ? 0 : total;
         }
     }
+
+    /**
+     *  For multiple files:
+
+     $scope.uploadFiles = function (files) {
+        if (files && files.length) {
+            for (var i = 0; i < files.length; i++) {
+                Upload.upload({data: {file: files[i]}});
+            }
+            // or send them all together for HTML5 browsers:
+            Upload.upload({data: {file: files, 'user': $scope.user}});
+        }
+    }
+     */
 })();
 

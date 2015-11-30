@@ -6,7 +6,6 @@ module.exports = function (req, res, next) {
     var token = req.headers['x-access-token'] || req.body.token || req.query.token;
 
     if (token) {
-
         jwt.verify(token, 'my-super-secret', function (err, decoded) {
             if (err) {
                 return res.status(401)

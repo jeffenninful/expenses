@@ -16,14 +16,14 @@
                 title: 'My Account'
             })
             .state('home', {
-                url: '/home',
+                url: '/',
                 templateUrl: 'app/home/home.html',
                 controller: 'HomeCtrl',
                 controllerAs: 'vm',
                 title: 'Home'
             })
             .state('login', {
-                url: '/',
+                url: '/login',
                 templateUrl: 'app/login/login.html',
                 controller: 'LoginCtrl',
                 controllerAs: 'vm',
@@ -36,13 +36,6 @@
                 controllerAs: 'vm',
                 title: 'Inbox'
             })
-            .state('upload', {
-                url: '/upload',
-                templateUrl: 'app/upload/inbox.html',
-                controller: 'UploadCtrl',
-                controllerAs: 'vm',
-                title: 'upload'
-            })
             .state('serviceError', {
                 url: '/serviceError',
                 templateUrl: 'app/serviceError/serviceError.html',
@@ -52,7 +45,7 @@
             });
 
         $locationProvider.html5Mode(true);
-        $urlRouterProvider.otherwise('/upload');
+        $urlRouterProvider.otherwise('/');
     }
 
 })();

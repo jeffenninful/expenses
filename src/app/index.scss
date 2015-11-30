@@ -39,6 +39,15 @@ $icon-font-path: "../../bower_components/bootstrap-sass-official/assets/fonts/bo
     line-height:60px;
     text-align : center;
 }
+
+form .thumb {
+    width: 100px;
+    height: auto;
+    float: none;
+    position: relative;
+    top: 15px;
+}
+
 /**
  *  Do not remove this comments bellow. It's the markers used by gulp-inject to inject
  *  all your sass files automatically

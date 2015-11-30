@@ -1,12 +1,15 @@
 var express = require('express');
-var fs = require('fs');
-var busboy = require('connect-busboy');
+var multer = require('multer');
+var path = require('path');
 
 module.exports = function (app) {
-    app.use(busboy());
+
     var router = express.Router();
     var verifyToken = require('./../helpers/verifyToken');
     var Expense = require('../model/expense');
+
+    var john = path.join(__dirname, '../uploads/');
+    var upload = multer({'dest': path.join(__dirname, '../uploads/')});
 
     router.use(verifyToken);
 
@@ -14,7 +17,7 @@ module.exports = function (app) {
 
     router.route('/')
         .get(getAll)
-        .post(postOne);
+        .post(upload.array('file'), postOne);
 
     router.route('/:id')
         .get(getOne)
@@ -34,17 +37,8 @@ module.exports = function (app) {
     }
 
     function postOne(req, res) {
-        //req.pipe(req.busboy);
-
-        //req.busboy.on('file', function (fieldname, file, filename) {
-        //req.body.receipt = {
-        //    'data': file,
-        //    'contentType': 'image/png',
-        //    'fileName' : filename
-        //};
-        //
-        //console.log(' req body', req.body);
-        //});
+        console.log('req body', req.body);
+        console.log('req files', req.files);
 
         var expense = new Expense(req.body);
         expense.save();

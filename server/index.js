@@ -2,12 +2,10 @@ module.exports = function () {
 
     var express = require('express');
     var mongoose = require('mongoose');
-    //var fs = require('fs');
-    //var path = require('path');
-    var cookieParser = require('cookie-parser');
     var bodyParser = require('body-parser');
-    var favicon = require('static-favicon');
+    var cookieParser = require('cookie-parser');
     var morgan = require('morgan');
+    var favicon = require('static-favicon');
     var app = express();
 
     app.use(favicon());
@@ -30,6 +28,7 @@ module.exports = function () {
     var registerController = require('./controller/register')(app);
     var departmentController = require('./controller/department')(app);
     var projectController = require('./controller/project')(app);
+    var notFoundController = require('./controller/notFound')();
 
     app.get('/', function (req, res) {
         res.redirect('/v1');
@@ -48,14 +47,7 @@ module.exports = function () {
 
     app.use('/v1/register', registerController);
     app.use('/v1/user', userController);
-
-    app.use('*', function (req, res) {
-            res.json({
-                error: 'INVALID_ROUTE',
-                message: 'Route not available'
-            });
-        }
-    );
+    app.use('*', notFoundController);
 
     app.listen(9000, function(){
         console.log('Server is running on port 9000');

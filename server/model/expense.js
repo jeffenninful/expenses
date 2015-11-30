@@ -11,7 +11,9 @@ var expenseModel = new Schema({
     billable: {type: Boolean},
     projectCode: {type: String},
     status: {type: String, default: 'pending'},
-    receipt: {data: Buffer, contentType: String, fileName: String}
+    receipt: [
+        {type: String}
+    ]
 });
 
 module.exports = mongoose.model('Expense', expenseModel);
