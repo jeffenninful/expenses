@@ -8,6 +8,8 @@
     "express": "^4.13.3",
     "gulp-filter": "^3.0.1",
     "gulp-flatten": "^0.2.0",
+    "gulp-if": "^2.0.0",
+    "gulp-print": "^2.0.1",
     "jsonwebtoken": "^5.4.0",
     "mongoose": "^4.2.2",
     "morgan": "^1.6.1",

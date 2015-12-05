@@ -7,12 +7,9 @@ module.exports = function (app) {
     var router = express.Router();
     var verifyToken = require('./../helpers/verifyToken');
     var Expense = require('../model/expense');
-
-    var john = path.join(__dirname, '../uploads/');
     var upload = multer({'dest': path.join(__dirname, '../uploads/')});
 
     router.use(verifyToken);
-
     router.use('/:id', oneMiddleWare);
 
     router.route('/')
@@ -39,6 +36,10 @@ module.exports = function (app) {
     function postOne(req, res) {
         console.log('req body', req.body);
         console.log('req files', req.files);
+
+        //req.files.forEach(function(item){
+        //    req.body.receipt.push(item.filename);
+        //});
 
         var expense = new Expense(req.body);
         expense.save();
