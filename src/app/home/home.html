@@ -1,23 +1,23 @@
 <div ng-include="'app/components/navbar/navbar.html'"></div>
 
-<div class="col-md-12 col-lg-12">
+<div class="col-sm-12">
     <div class="text-right">
         <p>Mileage Rate: {{ vm.milageRate | currency}}</p>
 
         <h4>Final Total : {{ vm.expenseTotal | currency}}</h4>
     </div>
-    <h3 class="page-header text-center"> {{vm.currentMonth}} Monthly Expenses</h3>
+    <h3 class="page-header text-center"> {{vm.currentMonth}} Expenses</h3>
 
     <form name="expenseForm" class="form-horizontal" ng-submit="vm.saveExpense(expenseForm)" novalidate>
-        <div class="form-group row">
-            <div class="col-md-6">
-                <label class="col-md-4 control-label">Date</label>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label class="col-sm-4 control-label">Date</label>
 
-                <div class="col-md-8">
+                <div class="col-sm-8">
                     <div class="input-group">
                         <input type="text" name="date" class="form-control"
                                uib-datepicker-popup="{{vm.date.format}}"
-                               ng-model="vm.expense.date"
+                               ng-model="vm.expense.expenseDate"
                                is-open="vm.date.opened"
                                ng-click="vm.date.open($event)"
                                datepicker-options="vm.dateOptions"
@@ -39,10 +39,10 @@
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <label class="col-md-4 control-label">Amount</label>
+            <div class="col-sm-6 form-group">
+                <label class="col-sm-4 control-label">Amount</label>
 
-                <div class="col-md-8">
+                <div class="col-sm-8">
                     <div class="input-group">
                         <div class="input-group-addon">
                             {{ vm.expense.category == 'Mileage' ? 'MPH':'$'}}
@@ -61,11 +61,11 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <div class="col-md-6">
-                <label class="col-md-4 control-label">Category</label>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label class="col-sm-4 control-label">Category</label>
 
-                <div class="col-md-8">
+                <div class="col-sm-8">
                     <select class="form-control" name="category"
                             ng-options="item.name as item.name for item in vm.expenseCategory"
                             ng-model="vm.expense.category" ng-change="vm.calculateTotal()">
@@ -78,11 +78,10 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-sm-6 form-group">
+                <label class="col-sm-4 control-label">Billable</label>
 
-                <label class="col-md-4 control-label">Billable</label>
-
-                <div class="col-md-8">
+                <div class="col-sm-8">
                     <select class="form-control" name="billable" ng-model="vm.expense.billable"
                             ng-options="item.value as item.name for item in vm.billingOptions">
                         <option value=""> Select</option>
@@ -96,11 +95,11 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <div class="col-md-6">
-                <label class="col-md-4 control-label">Description</label>
+        <div class="row">
+            <div class="col-sm-6 form-group">
+                <label class="col-sm-4 control-label">Description</label>
 
-                <div class="col-md-8">
+                <div class="col-sm-8">
                     <input type="text" class="form-control" required name="description"
                            placeholder="Vendor/Description" ng-model="vm.expense.description"/>
 
@@ -108,14 +107,13 @@
                          ng-show="expenseForm.description.$touched ||  expenseForm.$submitted">
                         <p ng-message="required" class="text-danger">Description is required</p>
                     </div>
-
                 </div>
             </div>
 
-            <div class="col-md-6">
-                <label class="col-md-4 control-label">Project Code</label>
+            <div class="col-sm-6 form-group">
+                <label class="col-sm-4 control-label">Project Code</label>
 
-                <div class="col-md-8">
+                <div class="col-sm-8">
 
                     <input type="text" class="form-control" name="projectCode" placeholder="Project Code"
                            ng-required="vm.expense.billable === 'Yes'"
@@ -128,25 +126,26 @@
                 </div>
             </div>
         </div>
-        <div class="form-group row">
-            <div class="col-md-12">
-                <label class="col-md-2 text-right">Receipts</label>
+        <div class="row">
+            <div class="col-sm-12 form-group">
+                <label class="col-sm-2 text-right">Receipts</label>
 
-                <div class="col-md-10">
+                <div class="col-sm-10">
                     <input type="file" ng-model="vm.receipt" name="receipt" ngf-select="" accept="image/*">
                     <img ngf-src="vm.receipt" class="thumb">
                     <span class="progress" ng-show="vm.receipt.progress >= 0">
-                        <div style="width:{{vm.receipt.progress}}%" ng-bind="vm.receipt.progress + '%'" class="ng-binding"></div>
+                        <div style="width:{{vm.receipt.progress}}%" ng-bind="vm.receipt.progress + '%'"
+                             class="ng-binding"></div>
                     </span>
                 </div>
             </div>
         </div>
 
-        <div class="form-group row">
-            <input type="submit" name="submit" class="col-md-2 col-md-offset-5 btn btn-primary" value="Submit"/>
+        <div class="form-group text-center row">
+            <input type="submit" name="submit" class="col-sm-2 col-sm-offset-5 btn btn-primary" value="Submit"/>
         </div>
         <div class="form-group text-center row">
-            <input type="button" name="cancel" class="col-md-2 col-md-offset-5 btn btn-danger" value="Cancel"
+            <input type="button" name="cancel" class="col-sm-2 col-sm-offset-5 btn btn-danger" value="Cancel"
                    ng-click="vm.cancel()"/>
         </div>
     </form>

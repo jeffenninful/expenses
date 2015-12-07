@@ -47,7 +47,7 @@ module.exports = function (app) {
     }
 
     function oneMiddleWare(req, res, next) {
-        Expense.findById(req.params.id, function (err, expense) {
+        Expense.find({user: req.params.id}, function (err, expense) {
             if (err) {
                 res.status(500).send(err);
             } else if (expense) {

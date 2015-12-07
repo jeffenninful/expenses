@@ -29,12 +29,12 @@
                 controllerAs: 'vm',
                 title: 'Login'
             })
-            .state('inbox', {
-                url: '/inbox',
-                templateUrl: 'app/inbox/inbox.html',
-                controller: 'InboxCtrl',
+            .state('status', {
+                url: '/status',
+                templateUrl: 'app/status/status.html',
+                controller: 'StatusCtrl',
                 controllerAs: 'vm',
-                title: 'Inbox'
+                title: 'Status'
             })
             .state('serviceError', {
                 url: '/serviceError',

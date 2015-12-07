@@ -5,10 +5,11 @@
         .factory('Dao', dao);
 
     /** @ngInject */
-    function dao($http, $q) {
+    function dao($http, $q, Session) {
 
         return {
             getLocation: getLocation,
+            getExpenses: getExpenses,
             getExpenseCategory: getExpenseCategory,
             saveExpense: saveExpense
         };
@@ -19,6 +20,11 @@
 
         function saveExpense(data) {
             return makeRequest('POST', 'v1/expense', data);
+        }
+
+        function getExpenses() {
+            var user = Session.getCookie('UID');
+            return makeRequest('GET', 'v1/expense/'+ user.profile._id);
         }
 
         function getExpenseCategory() {

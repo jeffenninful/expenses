@@ -4,8 +4,6 @@
     /**
      * @ngdoc: function
      * @name: timesheet.controller:HomeCtrl
-     * @description
-     * #HomeCtrl
      */
 
     angular
@@ -34,6 +32,7 @@
         Dao.getExpenseCategory().then(function (data) {
             vm.expenseCategory = data;
         });
+
         Session.getProfile().then(function (data) {
             vm.expense.user = data.profile._id.toString();
         });

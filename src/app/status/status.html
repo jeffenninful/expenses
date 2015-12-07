@@ -1,0 +1,35 @@
+<div ng-include="'app/components/navbar/navbar.html'"></div>
+
+<div class="container">
+    <div class="table-responsive">
+        <p class="lead text-center">Expense Status</p>
+        <table class="table table-striped">
+            <tr>
+                <th>Status</th>
+                <th>Date</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Description</th>
+            </tr>
+            <tr ng-repeat="item in vm.inbox" ng-if="vm.inbox.length > 0">
+                <td>
+                    <span class="btn"
+                          ng-class="{'btn-warning': item.status == 'pending', 'btn-danger': item.status == 'denied', 'btn-success': item.status == 'approved'}">
+                    {{item.status  | firstLetter}}
+                        <span class="caret"></span>
+                    </span>
+                </td>
+                <td>{{item.expenseDate | date: 'mediumDate'}}</td>
+                <td>{{item.amount | currency}}</td>
+                <td>{{item.category}}</td>
+                <td>{{item.description}}</td>
+            </tr>
+
+            <tr ng-if="!!vm.inbox.length == 0" class="emptyInbox">
+                <th colspan="3">No messages in your Inbox</th>
+            </tr>
+        </table>
+    </div>
+</div>
+
+

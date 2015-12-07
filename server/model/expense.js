@@ -4,6 +4,7 @@ var Schema = mongoose.Schema;
 var expenseModel = new Schema({
     user: {type: String},
     date: {type: Date},
+    expenseDate: {type: Date},
     submittedDate: {type: Date, default: new Date()},
     category: {type: String},
     description: {type: String},
