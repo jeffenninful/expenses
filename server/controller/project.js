@@ -1,5 +1,4 @@
 var express = require('express');
-var jwt = require('jsonwebtoken');
 
 module.exports = function (app) {
     var router = express.Router();
@@ -7,8 +6,8 @@ module.exports = function (app) {
     var Project = require('../model/project');
 
     router.use(verifyToken);
-
     router.use('/:id', oneMiddleWare);
+
     router.route('/')
         .get(getAll)
         .post(postOne);

@@ -6,7 +6,6 @@ module.exports = function (app) {
     var User = require('../model/user');
 
     router.use(verifyToken);
-
     router.use('/:id', oneMiddleWare);
 
     router.route('/')
