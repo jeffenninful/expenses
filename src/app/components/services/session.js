@@ -14,6 +14,7 @@
             setCookie: setCookie,
             deleteCookie: deleteCookie,
             getProfile: getProfile,
+            getUserRole: getUserRole,
             updateProfile: updateProfile
         };
 
@@ -29,12 +30,22 @@
             return $cookies.remove(name);
         }
 
+        function getUserRole() {
+            var user = this.getCookie('UID');
+            return user.profile.role;
+        }
+
         function isLoggedIn() {
             return !!this.getCookie('UID');
         }
 
         function logout() {
             return makeRequest('POST', 'v1/logout');
+        }
+
+        function updateProfile(data) {
+            var user = this.getCookie('UID');
+            return makeRequest('PUT', '/v1/user/' + user.profile._id, data);
         }
 
         function getProfile() {
@@ -49,11 +60,6 @@
 
             }
             return defer.promise;
-        }
-
-        function updateProfile(data) {
-            var user = this.getCookie('UID');
-            return makeRequest('PUT', '/v1/user/'+ user.profile._id, data);
         }
 
         function makeRequest(method, url, data) {

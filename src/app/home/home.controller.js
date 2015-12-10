@@ -65,7 +65,9 @@
                 if (vm.receipt) {
                     vm.expense.file = vm.receipt;
                 }
-
+                if (vm.expense.category === 'Mileage') {
+                    vm.expense.amount = vm.expenseTotal;
+                }
                 Upload.upload({
                     url: 'v1/expense',
                     data: vm.expense
@@ -86,9 +88,9 @@
             var total = 0;
             if (vm.expense.amount !== undefined) {
                 if (vm.expense.category === 'Mileage') {
-                    total += (parseInt(vm.expense.amount, 10) * vm.milageRate);
+                    total += (parseFloat(vm.expense.amount) * vm.milageRate);
                 } else {
-                    total += parseInt(vm.expense.amount, 10);
+                    total += parseFloat(vm.expense.amount);
                 }
             }
             vm.expenseTotal = isNaN(total) ? 0 : total;

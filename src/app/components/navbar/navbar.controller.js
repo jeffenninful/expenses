@@ -6,25 +6,36 @@
         .controller('NavbarCtrl', NavbarCtrl);
 
     /** @ngInject */
-    function NavbarCtrl($state, Auth, Session, toastr) {
+    function NavbarCtrl($state, Auth, Session, toastr, $location) {
         var vm = this;
         vm.login = login;
         vm.logout = logout;
+        vm.isAdmin = isAdmin;
+        vm.isManager = isManager;
         vm.isLoggedIn = isLoggedIn;
+        vm.isActiveClass = isActiveClass;
         vm.navigate = navigate;
 
         vm.guest = {};
-        vm.items = [
-            'Settings 1',
-            'Settings 2'
-        ];
 
         Session.getProfile().then(function (data) {
             vm.name = data.profile.firstName;
         });
 
+        function isAdmin() {
+            return Session.getUserRole() === 'admin';
+        }
+
+        function isManager() {
+            return Session.getUserRole() === 'manager';
+        }
+
         function isLoggedIn() {
             return Session.isLoggedIn();
+        }
+
+        function isActiveClass(location) {
+            return location == $location.path();
         }
 
         function login(form) {
@@ -45,7 +56,6 @@
                 $state.go('login');
             });
         }
-
 
         function navigate(route) {
             $state.go(route);

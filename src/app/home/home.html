@@ -49,13 +49,13 @@
                         </div>
                         <input type="text" class="form-control" name="amount" required placeholder="$$ / MPH"
                                ng-change="vm.calculateTotal()" ng-model="vm.expense.amount"
-                               ng-pattern="/^[0-9]+$/"/>
+                               ng-pattern="/^[.0-9]+$/"/>
                     </div>
                     <div ng-messages="expenseForm.amount.$error"
                          ng-show="expenseForm.amount.$touched ||  expenseForm.$submitted">
                         <p ng-message="required" class="text-danger">Amount is required</p>
 
-                        <p ng-message="pattern" class="text-danger">Numbers only</p>
+                        <p ng-message="pattern" class="text-danger">Input must be a number</p>
                     </div>
                 </div>
             </div>

@@ -22,12 +22,26 @@
                 controllerAs: 'vm',
                 title: 'Home'
             })
+            .state('inbox', {
+                url: '/inbox',
+                templateUrl: 'app/inbox/inbox.html',
+                controller: 'InboxCtrl',
+                controllerAs: 'vm',
+                title: 'Inbox'
+            })
             .state('login', {
                 url: '/login',
                 templateUrl: 'app/login/login.html',
                 controller: 'LoginCtrl',
                 controllerAs: 'vm',
                 title: 'Login'
+            })
+            .state('manage', {
+                url: '/manage',
+                templateUrl: 'app/manage/manage.html',
+                controller: 'ManageCtrl',
+                controllerAs: 'vm',
+                title: 'Manage'
             })
             .state('status', {
                 url: '/status',
