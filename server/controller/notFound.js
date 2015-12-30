@@ -13,7 +13,7 @@ module.exports = function () {
     function notFound(req, res) {
         res.json({
             error: 'INVALID_ROUTE',
-            message: 'Route is invalid'
+            message: 'Route is Invalid'
         });
     }
 

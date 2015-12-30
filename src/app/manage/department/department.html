@@ -1,0 +1,34 @@
+<div ng-controller="DepartmentCtrl as vm">
+    <div class="rows form-group">
+        <div class="col-sm-7 form-group">
+            <div class="btn btn-default" ng-click="vm.showModal('add')">
+                <span class="glyphicon glyphicon-plus text-primary"></span> Add New
+            </div>
+        </div>
+        <div class="col-sm-5 form-group">
+            <input type="search" class="form-control" name="search" ng-model="vm.search" placeholder="Search"/>
+        </div>
+    </div>
+    <table class="table table-striped">
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Code</th>
+            <th>Active</th>
+            <th>Edit</th>
+        </tr>
+        <tr ng-repeat="department in vm.departments | filter:vm.search | orderBy:'active':true" ng-if="vm.departments.length > 0" >
+            <td>{{$index + 1}}</td>
+            <td>{{department.name}}</td>
+            <td>{{department.code}}</td>
+            <td>{{department.active}}</td>
+            <td>
+                <button class="btn btn-default" ng-click="vm.showModal('edit', department)">
+                    Edit <span class="glyphicon glyphicon-pencil"></span></button>
+            </td>
+        </tr>
+        <tr ng-if="!!vm.departments.length == 0" class="emptyInbox">
+            <th colspan="5">No departments found.</th>
+        </tr>
+    </table>
+</div>

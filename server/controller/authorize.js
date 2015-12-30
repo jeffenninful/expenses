@@ -27,7 +27,7 @@ module.exports = function (app) {
             });
             return;
         }
-        User.findOne({email: req.body.email},
+        User.findOne({email: req.body.email}, {password: 0, __v :0},
             function (err, user) {
                 if (err) {
                     res.status(500);
@@ -77,11 +77,10 @@ module.exports = function (app) {
                                 console.log('err', err);
                             }
                         });
-                        var modifiedUser = JSON.parse(JSON.stringify(user));
-                        delete modifiedUser.password;
+
                         res.status(200);
                         res.json({
-                            profile: modifiedUser,
+                            profile: user,
                             token: token
                         });
                     }

@@ -2,7 +2,8 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var expenseModel = new Schema({
-    user: {type: String},
+    userId: {type: String},
+    managerId: {type: String},
     date: {type: Date},
     expenseDate: {type: Date},
     submittedDate: {type: Date, default: new Date()},

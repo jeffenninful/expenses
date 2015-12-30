@@ -1,0 +1,26 @@
+<div ng-controller="ExpenseListCtrl as vm">
+    <table class="table table-striped">
+        <tr>
+            <th>Date</th>
+            <th>User</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th>Billable</th>
+            <th>Description</th>
+            <th>Receipts</th>
+        </tr>
+        <tr ng-repeat="expense in vm.expenses" ng-if="vm.expenses.length > 0">
+            <td>{{expense.expenseDate | date: 'mediumDate'}}</td>
+            <td>{{expense.userId}}</td>
+            <td>{{expense.amount | currency}}</td>
+            <td>{{expense.category}}</td>
+            <td>{{expense.billable}}</td>
+            <td>{{expense.description}}</td>
+            <td>{{expense.receipt}}</td>
+        </tr>
+
+        <tr ng-if="!!vm.expenses.length == 0" class="emptyInbox">
+            <th colspan="6">No Approved Expenses.</th>
+        </tr>
+    </table>
+</div>

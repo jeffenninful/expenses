@@ -20,15 +20,16 @@ module.exports = function () {
         throw 'Database connection error';
     });
 
-    var userController = require('./controller/user')(app);
-    var expenseController = require('./controller/expense')(app);
-    var categoryController = require('./controller/category')(app);
-    var authorizeController = require('./controller/authorize')(app);
-    var logoutController = require('./controller/logout')(app);
-    var registerController = require('./controller/register')(app);
-    var departmentController = require('./controller/department')(app);
-    var projectController = require('./controller/project')(app);
-    var notFoundController = require('./controller/notFound')();
+    var userCtrl = require('./controller/user')(app);
+    var expenseCtrl = require('./controller/expense')(app);
+    var categoryCtrl = require('./controller/category')(app);
+    var authorizeCtrl = require('./controller/authorize')(app);
+    var logoutCtrl = require('./controller/logout')(app);
+    var registerCtrl = require('./controller/register')(app);
+    var departmentCtrl = require('./controller/department')(app);
+    var projectCtrl = require('./controller/project')(app);
+    var notFoundCtrl = require('./controller/notFound')();
+    var reviewExpenseCtrl = require('./controller/reviewExpense')();
 
     app.get('/', function (req, res) {
         res.redirect('/v1');
@@ -37,17 +38,18 @@ module.exports = function () {
         res.send('Version 1.0 of Expenses API');
     });
 
-    app.use('/v1/authorize', authorizeController);
-    app.use('/v1/category', categoryController);
-    app.use('/v1/department', departmentController);
+    app.use('/v1/authorize', authorizeCtrl);
+    app.use('/v1/category', categoryCtrl);
+    app.use('/v1/department', departmentCtrl);
 
-    app.use('/v1/expense', expenseController);
-    app.use('/v1/logout', logoutController);
-    app.use('/v1/project', projectController);
+    app.use('/v1/expense', expenseCtrl);
+    app.use('/v1/logout', logoutCtrl);
+    app.use('/v1/project', projectCtrl);
 
-    app.use('/v1/register', registerController);
-    app.use('/v1/user', userController);
-    app.use('*', notFoundController);
+    app.use('/v1/review', reviewExpenseCtrl);
+    app.use('/v1/register', registerCtrl);
+    app.use('/v1/user', userCtrl);
+    app.use('*', notFoundCtrl);
 
     app.listen(9000, function(){
         console.log('Server is running on port 9000');

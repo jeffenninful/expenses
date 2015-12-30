@@ -1,9 +1,9 @@
 var express = require('express');
 
-module.exports = function (app) {
+module.exports = function () {
     var router = express.Router();
     var verifyToken = require('./../helpers/verifyToken');
-    var User = require('../model/user');
+    var Expense = require('../model/expense');
 
     router.use(verifyToken);
     router.use('/:id', oneMiddleWare);
@@ -19,15 +19,14 @@ module.exports = function (app) {
         .delete(removeOne);
 
     function getAll(req, res) {
-        //TODO limit read.write priviledges
         //if (req.decoded.role === 'admin') {
-        User.find({}, {password: 0, __v: 0}, function (err, list) {
-            if (err) {
-                res.status(500).send(err);
-            } else {
-                res.json(list);
-            }
-        });
+            Expense.find({}, function (err, list) {
+                if (err) {
+                    res.status(500).send(err);
+                } else {
+                    res.json(list);
+                }
+            });
         //} else {
         //    res.json({
         //        error: 'UNAUTHORIZED_USER',
@@ -38,7 +37,7 @@ module.exports = function (app) {
     }
 
     function postOne(req, res) {
-        var user = new User(req.body);
+        var user = new Expense(req.body);
         user.save();
         res.status(201);
         res.json({
@@ -49,7 +48,7 @@ module.exports = function (app) {
 
     function oneMiddleWare(req, res, next) {
         if (req.params.id) {
-            User.findById(req.params.id, {password: 0, __v: 0}, function (err, user) {
+            Expense.findById(req.params.id, {password: 0, __v: 0}, function (err, user) {
                 if (err) {
                     res.status(500);
                     res.json({
@@ -63,7 +62,7 @@ module.exports = function (app) {
                     res.status(400);
                     res.json({
                         error: 'NOT_FOUND',
-                        message: 'User not found'
+                        message: 'Expense not found'
                     });
                 }
             });
@@ -71,7 +70,7 @@ module.exports = function (app) {
             res.status(400);
             res.json({
                 code: 'SERVICE_ERROR',
-                message: 'User id not provided'
+                message: 'Expense id not provided'
             });
         }
     }

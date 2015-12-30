@@ -16,6 +16,15 @@ module.exports = function (app) {
         .get(getAll)
         .post(upload.array('file'), postOne);
 
+    router.route('/approved')
+        .get(getApproved);
+
+    router.route('/denied')
+        .get(getDenied);
+
+    router.route('/pending')
+        .get(getPending);
+
     router.route('/:id')
         .get(getOne)
         .put(putOne)
@@ -47,7 +56,9 @@ module.exports = function (app) {
     }
 
     function oneMiddleWare(req, res, next) {
-        Expense.find({user: req.params.id}, function (err, expense) {
+        console.log('inside middleware',req.params.id);
+
+        Expense.find({userId: req.params.id}, function (err, expense) {
             if (err) {
                 res.status(500).send(err);
             } else if (expense) {
@@ -104,6 +115,38 @@ module.exports = function (app) {
                 res.status(500).send(err);
             } else {
                 res.status(204).send('expense removed');
+            }
+        });
+    }
+
+    function getApproved(req, res) {
+        Expense.find({status: 'approved'}, function (err, list) {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                res.json(list);
+            }
+        });
+    }
+
+    function getDenied(req, res) {
+        Expense.find({status: 'denied'}, function (err, list) {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                res.json(list);
+            }
+        });
+    }
+
+    function getPending(req, res) {
+        console.log('inside pending');
+
+        Expense.find({status: 'pending'}, function (err, list) {
+            if (err) {
+                res.status(500).send(err);
+            } else {
+                res.json(list);
             }
         });
     }

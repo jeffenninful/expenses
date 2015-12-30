@@ -5,28 +5,29 @@
         <p class="lead text-center">Expense Status</p>
         <table class="table table-striped">
             <tr>
+                <th>#</th>
                 <th>Status</th>
                 <th>Date</th>
                 <th>Amount</th>
                 <th>Category</th>
+                <th>Billable</th>
                 <th>Description</th>
             </tr>
-            <tr ng-repeat="item in vm.inbox" ng-if="vm.inbox.length > 0">
-                <td>
-                    <span class="btn"
-                          ng-class="{'btn-warning': item.status == 'pending', 'btn-danger': item.status == 'denied', 'btn-success': item.status == 'approved'}">
-                    {{item.status  | firstLetter}}
-                        <span class="caret"></span>
-                    </span>
-                </td>
+            <tr ng-repeat="item in vm.inbox | orderBy:'status':true" ng-if="vm.inbox.length > 0"
+                ng-class="{'text-danger': item.status == 'denied',
+                        'text-warning': item.status == 'pending',
+                        'text-success': item.status == 'approved'}">
+                <td>{{ $index + 1 }}</td>
+                <td><span> {{item.status  | firstLetter}} </span></td>
                 <td>{{item.expenseDate | date: 'mediumDate'}}</td>
                 <td>{{item.amount | currency}}</td>
                 <td>{{item.category}}</td>
-                <td>{{item.description}}</td>
+                <td>{{item.billable}}</td>
+                <td>{{item.description | firstLetter }}</td>
             </tr>
 
             <tr ng-if="!!vm.inbox.length == 0" class="emptyInbox">
-                <th colspan="5">No pending expenses.</th>
+                <th colspan="6">No pending expenses.</th>
             </tr>
         </table>
     </div>

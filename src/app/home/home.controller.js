@@ -34,7 +34,8 @@
         });
 
         Session.getProfile().then(function (data) {
-            vm.expense.user = data.profile._id.toString();
+            vm.expense.userId = data.profile._id.toString();
+            vm.expense.managerId = data.profile.managerId;
         });
 
         vm.date = {
@@ -52,7 +53,6 @@
 
 
         function openCalender() {
-
             vm.date.opened = true;
         }
 
