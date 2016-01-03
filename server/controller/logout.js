@@ -1,27 +1,30 @@
 var express = require('express');
+var verifyToken = require('./../helpers/verifyToken');
 
 module.exports = function (app) {
     var Session = require('../model/session');
     var router = express.Router();
 
+    router.use(verifyToken);
+
     router.route('/')
         .post(endSession);
 
     function endSession(req, res) {
-        Session.findOne({token: req.headers['x-access-token']},
-            function (err, data) {
+        console.log('decoded reg', req.decoded);
+
+        //decode token and retrieve user id
+        Session.findOne({_id: req.decoded._id},
+            function (err, foundSession) {
                 if (err) {
                     console.log('No session found');
                 } else {
-                    Session.remove(data, function (err) {
-                        if (err) {
-                            console.log('Error removing session', err);
-                        }
-                    });
+                    //foundSession.token.indexOf();
                     res.status(200);
                     res.json({data: {success: true}});
                 }
             });
     }
+
     return router;
 };

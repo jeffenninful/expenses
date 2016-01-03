@@ -7,6 +7,7 @@ module.exports = function (req, res, next) {
 
     if (token) {
         jwt.verify(token, 'my-super-secret', function (err, decoded) {
+
             if (err) {
                 return res.status(401)
                     .json({

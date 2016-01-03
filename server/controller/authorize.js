@@ -1,6 +1,7 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var bCrypt = require('bcrypt-nodejs');
+var parser = require('ua-parser-js');
 
 module.exports = function (app) {
     var User = require('../model/user');
@@ -27,7 +28,7 @@ module.exports = function (app) {
             });
             return;
         }
-        User.findOne({email: req.body.email}, {password: 0, __v :0},
+        User.findOne({email: req.body.email},
             function (err, user) {
                 if (err) {
                     res.status(500);
@@ -65,22 +66,57 @@ module.exports = function (app) {
                     } else {
 
                         var token = jwt.sign(user, app.get('supersecret'), function () {
-                            expiresInMinutes: 2
+                            expiresIn: 120
                         });
-                        var session = new Session();
-                        session._id = user._id;
-                        session.token = token;
-                        session.expiration = 180;
 
-                        session.save(function (err) {
+                        Session.findOne({_id: user._id}, function (err, foundSession) {
                             if (err) {
-                                console.log('err', err);
+                                console.log(err);
+                                return;
+                            }
+
+                            if (foundSession) {
+                                //add to existing sessions
+                                foundSession.token.push({
+                                    id: token,
+                                    ipAddress: req.connection.remoteAddress,
+                                    startDate: new Date(),
+                                    userAgent: parser(req.headers['user-agent'])
+                                });
+
+                                foundSession.save(function (err) {
+                                    if (err) {
+                                        console.log('err', err);
+                                        throw err;
+                                    }
+                                });
+
+                            } else {
+                                //start new session for user
+                                var session = new Session();
+                                session._id = user._id;
+                                session.token.push({
+                                    id: token,
+                                    ipAddress: req.connection.remoteAddress,
+                                    startDate: new Date(),
+                                    userAgent: parser(req.headers['user-agent'])
+                                });
+
+                                session.save(function (err) {
+                                    if (err) {
+                                        console.log('err', err);
+                                        throw err;
+                                    }
+                                });
                             }
                         });
 
+                        var modifiedUser = user;
+                        delete modifiedUser.password;
+
                         res.status(200);
                         res.json({
-                            profile: user,
+                            profile: modifiedUser,
                             token: token
                         });
                     }

@@ -4,7 +4,12 @@ var Schema = mongoose.Schema;
 var userModel = new Schema({
     firstName: {type: String},
     lastName: {type: String},
-    email: {type: String},
+    email: {
+        type: String,
+        validate: function(input){
+            return /^.+@.+\..+$/.test(input);
+        }
+    },
     password: {type: String},
     dateJoined: {type: Date},
     lastLogin: {type: Date},

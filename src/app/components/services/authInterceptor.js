@@ -25,7 +25,7 @@
                 var session = $injector.get('Session');
                 session.deleteCookie('UID');
 
-                $state.go('login');
+                $state.go('register');
             }
             return $q.reject(rejection);
         }

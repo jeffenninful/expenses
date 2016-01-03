@@ -35,7 +35,7 @@
         }
 
         function isActiveClass(location) {
-            return location == $location.path();
+            return location === $location.path();
         }
 
         function login(form) {
@@ -53,7 +53,7 @@
         function logout() {
             Session.logout().then(function () {
                 Session.deleteCookie('UID');
-                $state.go('login');
+                $state.go('register');
             });
         }
 

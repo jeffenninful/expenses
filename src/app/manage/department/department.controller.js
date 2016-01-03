@@ -14,7 +14,7 @@
         .controller('DepartmentCtrl', DepartmentCtrl);
 
     /** @ngInject */
-    function DepartmentCtrl($state, $uibModal, Session, Dao, toastr) {
+    function DepartmentCtrl($uibModal, Dao) {
         var vm = this;
         vm.departments = null;
 
@@ -26,7 +26,7 @@
 
         function showModal(action, data) {
 
-            var modalInstance = $uibModal.open({
+            $uibModal.open({
                 templateUrl: 'app/manage/department/departmentModal.html',
                 controller: 'DepartmentModalCtrl as vm',
                 size: 'md',

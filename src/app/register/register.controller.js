@@ -2,10 +2,10 @@
     'use strict';
 
     angular.module('expenses')
-        .controller('LoginCtrl', LoginCtrl);
+        .controller('RegisterCtrl', RegisterCtrl);
 
     /** @ngInject */
-    function LoginCtrl($state, Auth, Session) {
+    function RegisterCtrl($state, Auth, Session) {
         var vm = this;
         vm.guest = {};
         vm.register = register;
@@ -22,8 +22,11 @@
             if (form.$valid) {
                 Auth.register(vm.guest).then(function () {
                     $state.go('home');
-                }, function (error) {
-                    console.log('Error encountered.', error);
+                }, function (response) {
+                    console.log('Error', response);
+                    response.error.forEach(function(error){
+                        form[error.field].$setValidity(error.code, false);
+                    });
                 });
             } else {
                 //scroll to first error

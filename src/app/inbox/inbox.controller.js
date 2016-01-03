@@ -11,14 +11,14 @@
         .controller('InboxCtrl', InboxCtrl);
 
     /* @ngInject */
-    function InboxCtrl($state, $filter, Session, Dao, Upload, toastr) {
+    function InboxCtrl($state, Session, Dao) {
         var vm = this;
 
         init();
 
         function init() {
             if (!Session.isLoggedIn()) {
-                $state.go('login');
+                $state.go('register');
             }
         }
 

@@ -16,7 +16,7 @@
                 title: 'My Account'
             })
             .state('home', {
-                url: '/',
+                url: '/home',
                 templateUrl: 'app/home/home.html',
                 controller: 'HomeCtrl',
                 controllerAs: 'vm',
@@ -29,12 +29,12 @@
                 controllerAs: 'vm',
                 title: 'Inbox'
             })
-            .state('login', {
-                url: '/login',
-                templateUrl: 'app/login/login.html',
-                controller: 'LoginCtrl',
+            .state('register', {
+                url: '/',
+                templateUrl: 'app/register/register.html',
+                controller: 'RegisterCtrl',
                 controllerAs: 'vm',
-                title: 'Login'
+                title: 'Register'
             })
             .state('manage', {
                 url: '/manage',

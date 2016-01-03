@@ -32,7 +32,7 @@
 
         function saveDepartment(form) {
             if (form.$valid) {
-                if (action == 'add') {
+                if (action === 'add') {
                     Dao.setLocation(vm.department).then(function () {
                         $uibModalInstance.close();
                         $state.reload();

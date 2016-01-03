@@ -1,6 +1,7 @@
 var express = require('express');
 var jwt = require('jsonwebtoken');
 var bCrypt = require('bcrypt-nodejs');
+var parser = require('ua-parser-js');
 
 module.exports = function (app) {
     var User = require('../model/user');
@@ -48,6 +49,17 @@ module.exports = function (app) {
             } else {
                 //no such user hence create user
                 var newUser = new User(req.body);
+
+                if (newUser.validateSync()) {
+                    res.status(404);
+                    res.json({
+                        error: [{
+                            code: 'pattern',
+                            field: 'email'
+                        }]
+                    });
+                    return;
+                }
                 newUser.password = createHash(req.body.password);
                 newUser.dateJoined = new Date();
                 newUser.save(function (err, user) {
@@ -59,18 +71,24 @@ module.exports = function (app) {
                         });
                     } else {
                         var token = jwt.sign(user, app.get('supersecret'), function () {
-                            expiresInMinutes: 60
+                            expiresIn: 120
                         });
+
                         var session = new Session();
                         session._id = user._id;
-                        session.token = token;
-                        session.expiration = 180;
+                        session.token.push({
+                            id: token,
+                            ipAddress: req.connection.remoteAddress,
+                            startDate: new Date(),
+                            userAgent: parser(req.headers['user-agent'])
+                        });
 
                         session.save(function (err) {
                             if (err) {
-                                console.log('err', err);
+                                throw err;
                             }
                         });
+
                         var modifiedUser = JSON.parse(JSON.stringify(user));
                         delete modifiedUser.password;
                         res.status(200);

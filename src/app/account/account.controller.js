@@ -15,7 +15,7 @@
 
         function init() {
             if (!Session.isLoggedIn()) {
-                $state.go('login');
+                $state.go('register');
             }
         }
 
