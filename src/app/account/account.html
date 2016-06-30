@@ -33,7 +33,6 @@
             <div ng-messages="registerForm.email.$error"
                  ng-show="registerForm.email.$touched || registerForm.$submitted">
                 <p ng-message="required"> Email is required</p>
-
                 <p ng-message="pattern"> Email is invalid</p>
             </div>
         </div>
@@ -45,6 +44,19 @@
             <div ng-messages="registerForm.role.$error"
                  ng-show="registerForm.role.$touched || registerForm.$submitted">
                 <p ng-message="required"> Role is required</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Current Password </label>
+            <input type="password" class="form-control" name="password" ng-model="vm.guest.password" required
+                   ng-minlength="5"/>
+
+            <div ng-messages="registerForm.password.$error"
+                 ng-show="registerForm.password.$touched || registerForm.$submitted">
+                <p ng-message="required"> Password is required</p>
+
+                <p ng-message="minlength"> Password is too short</p>
             </div>
         </div>
 

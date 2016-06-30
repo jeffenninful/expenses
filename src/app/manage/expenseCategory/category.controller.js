@@ -6,29 +6,28 @@
 
     /**
      * @ngdoc: function
-     * @name: timesheet.controller:ManageCtrl
+     * @name: timesheet.controller:CategoryCtrl
      */
 
     angular
         .module('expenses')
-        .controller('DepartmentCtrl', DepartmentCtrl);
+        .controller('CategoryCtrl', CategoryCtrl);
 
     /** @ngInject */
-    function DepartmentCtrl($uibModal, Dao) {
+    function CategoryCtrl($uibModal, Dao) {
         var vm = this;
         vm.departments = [];
-        vm.showModal = showModal;
-        vm.hasDepartments = hasDepartments;
+
 
         Dao.getLocation().then(function (data) {
             vm.departments = data;
         });
 
-        function hasDepartments() {
+        vm.hasNoDepartments = function () {
             return vm.departments.length === 0;
-        }
+        };
 
-        function showModal(action, data) {
+        vm.showModal = function (action, data) {
             $uibModal.open({
                 templateUrl: 'app/manage/department/departmentModal.html',
                 controller: 'DepartmentModalCtrl as vm',
@@ -43,7 +42,7 @@
                     }
                 }
             });
-        }
+        };
     }
 })();
 

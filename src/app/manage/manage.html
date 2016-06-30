@@ -1,33 +1,26 @@
 <div ng-include="'app/components/navbar/navbar.html'"></div>
 
 <div class="container">
+    <p class="text-center"> Manage page</p>
     <uib-tabset>
         <uib-tab active="true">
-            <uib-tab-heading> Expenses</uib-tab-heading>
-            <div ng-include src="'app/manage/expenseList/expenseList.html'"></div>
+            <uib-tab-heading ui-sref="manage.expense"> Expenses</uib-tab-heading>
+        </uib-tab>
+        <uib-tab>
+            <uib-tab-heading ui-sref="manage.user"> Users</uib-tab-heading>
+        </uib-tab>
+        <uib-tab>
+            <uib-tab-heading ui-sref="manage.department">Departments</uib-tab-heading>
         </uib-tab>
 
         <uib-tab>
-            <uib-tab-heading> Users</uib-tab-heading>
-            <div ng-include src="'app/manage/user/user.html'"></div>
+            <uib-tab-heading ui-sref="manage.project">Projects</uib-tab-heading>
         </uib-tab>
-
-        <uib-tab >
-            <uib-tab-heading>Departments</uib-tab-heading>
-            <div ng-include src="'app/manage/department/department.html'"></div>
-        </uib-tab>
-        <!--
         <uib-tab>
-            <uib-tab-heading>Projects</uib-tab-heading>
-            <div ng-include src="'app/manage/project/project.html'"></div>
+            <uib-tab-heading ui-sref="manage.category">Categories</uib-tab-heading>
         </uib-tab>
-
-        <uib-tab>
-            <uib-tab-heading>Expense Category</uib-tab-heading>
-            <div ng-include src="'app/manage/expenseCategory/category.html'"></div>
-        </uib-tab>
-        -->
     </uib-tabset>
+    <div ui-view></div>
 </div>
 
 

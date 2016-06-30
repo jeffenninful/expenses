@@ -1,0 +1,21 @@
+<div class="container">
+    <table ng-table="vm.users" class="table table-condensed table-bordered table-striped">
+        <tr ng-repeat="row in $data">
+            <td data-title="'Date'" sortable="'expenseDate'">{{row.expenseDate | date: 'mediumDate'}}</td>
+            <td data-title="'Id'" sortable="'userId'">{{row.userId}}</td>
+            <td data-title="'Amount'" sortable="'amount'">{{row.amount | currency}}</td>
+            <td data-title="'Category'" sortable="'category'">{{row.category}}</td>
+            <td data-title="'Billable'" sortable="'billable'">{{row.billable}}</td>
+            <td data-title="'Description'" sortable="'description'"> {{row.description}}</td>
+            <td data-title="'Receipt'">{{row.receipt}}</td>
+        </tr>
+        <tr ng-if="vm.hasNoExpenses()" class="emptyInbox">
+            <th colspan="7">No Pending Expenses.</th>
+        </tr>
+    </table>
+</div>
+
+
+
+
+

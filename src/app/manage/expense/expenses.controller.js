@@ -9,26 +9,33 @@
 
     /**
      * @ngdoc: function
-     * @name: timesheet.controller:ManageCtrl
+     * @name: timesheet.controller:ExpenseCtrl
      */
 
     angular
         .module('expenses')
-        .controller('ExpenseListCtrl', ExpenseListCtrl);
+        .controller('ExpenseCtrl', ExpenseCtrl);
 
     /** @ngInject */
-    function ExpenseListCtrl($uibModal, Dao) {
+    function ExpenseCtrl($uibModal, NgTableParams, Dao) {
         var vm = this;
-        vm.departments = null;
+        vm.departments = [];
 
-        vm.showModal = showModal;
-
-        Dao.getApprovedExpense().then(function (data) {
-            vm.expenses = data;
+        vm.expenses = new NgTableParams({
+            sorting: {description: 'asc'}
+        }, {
+            getData: function () {
+                return Dao.getApprovedExpense().then(function (data) {
+                    return data;
+                })
+            }
         });
 
-        function showModal(action, data) {
+        vm.hasNoExpenses = function () {
+            return vm.expenses.data ? vm.expenses.data.length === 0 : false;
+        };
 
+        vm.showModal = function (action, data) {
             $uibModal.open({
                 templateUrl: 'app/manage/department/departmentModal.html',
                 controller: 'DepartmentModalCtrl as vm',
@@ -43,7 +50,7 @@
                     }
                 }
             });
-        }
+        };
     }
 })();
 

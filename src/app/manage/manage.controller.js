@@ -13,6 +13,7 @@
     /** @ngInject */
     function ManageCtrl() {
         var vm = this;
+        vm.title = '';
     }
 })();
 
