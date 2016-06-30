@@ -1,16 +1,13 @@
-<<!--
-div ng-include="'app/components/navbar/navbar.html'"></div>
+<div ng-include="'app/components/navbar/navbar.html'"></div>
 
 <div class="container">
     <div class="table-responsive">
-        <p class="lead text-center">Expense Status</p>
+        <p class="lead text-center">Inbox </p>
         <table class="table table-striped">
             <tr>
-                <th>Status</th>
-                <th>Date</th>
-                <th>Amount</th>
-                <th>Category</th>
-                <th>Description</th>
+                <th>#</th>
+                <th>Subject</th>
+                <th>Received</th>
             </tr>
             <tr ng-repeat="item in vm.inbox" ng-if="vm.inbox.length > 0">
                 <td>
@@ -27,11 +24,11 @@ div ng-include="'app/components/navbar/navbar.html'"></div>
             </tr>
 
             <tr ng-if="!!vm.inbox.length == 0" class="emptyInbox">
-                <th colspan="5">No pending expenses.</th>
+                <th colspan="5">No messages.</th>
             </tr>
         </table>
     </div>
 </div>
--->
+
 
 

@@ -22,7 +22,7 @@
             }
         }
 
-        Dao.getExpenses().then(function (data) {
+        Dao.getExpense().then(function (data) {
             vm.inbox = data;
         });
     }

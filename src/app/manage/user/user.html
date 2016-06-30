@@ -1,21 +1,20 @@
-<div ng-controller="UserListCtrl as vm">
-
-<table class="table">
-    <tr>
-        <th>First name</th>
-        <th>Last name</th>
-        <th>Email</th>
-        <th>Active</th>
-        <th>Manager</th>
-        <th>Projects</th>
-    </tr>
-    <tr ng-repeat="user in vm.users">
-        <td>{{user.firstName }}</td>
-        <td>{{user.lastName}}</td>
-        <td>{{user.email}}</td>
-        <td>{{user.active}}</td>
-        <td>{{user.managerId}}</td>
-        <td>{{user.projects}}</td>
-    </tr>
-</table>
+<div class="container">
+    <table ng-table="vm.users" class="table table-condensed table-bordered table-striped">
+        <tr ng-repeat="row in $data">
+            <td data-title="'First Name'" sortable="'firstName'">{{row.firstName }}</td>
+            <td data-title="'Last Name'" sortable="'lastName'">{{row.lastName}}</td>
+            <td data-title="'Email'" sortable="'email'">{{row.email}}</td>
+            <td data-title="'Active'" sortable="'active'">{{row.active}}</td>
+            <td data-title="'Managers'"> {{row.managerId}}</td>
+            <td data-title="'Projects'"><select class="form-control" ng-options="item in row.projects"></select></td>
+        </tr>
+        <tr ng-if="vm.hasNoUsers()" class="emptyInbox">
+            <th colspan="7">No Users.</th>
+        </tr>
+    </table>
 </div>
+
+
+
+
+

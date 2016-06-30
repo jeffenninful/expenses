@@ -6,17 +6,17 @@
 
     /**
      * @ngdoc: function
-     * @name: timesheet.controller:ManageCtrl
+     * @name: timesheet.controller:ProjectCtrl
      */
 
     angular
         .module('expenses')
-        .controller('DepartmentCtrl', DepartmentCtrl);
+        .controller('ProjectCtrl', ProjectCtrl);
 
     /** @ngInject */
-    function DepartmentCtrl($uibModal, Dao) {
+    function ProjectCtrl($uibModal, Dao) {
         var vm = this;
-        vm.departments = [];
+        vm.departments = null;
         vm.showModal = showModal;
         vm.hasDepartments = hasDepartments;
 

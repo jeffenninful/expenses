@@ -17,7 +17,7 @@ module.exports = function () {
 
     mongoose.connect('mongodb://localhost/expenses');
     mongoose.connection.on('error', function () {
-        throw 'Database connection error';
+        throw 'Database connection error./n Is mongod running?';
     });
 
     var userCtrl = require('./controller/user')(app);

@@ -1,4 +1,4 @@
-<div ng-controller="DepartmentCtrl as vm">
+<div>
     <div class="rows form-group">
         <div class="col-sm-7 form-group">
             <div class="btn btn-default" ng-click="vm.showModal('add')">
@@ -17,17 +17,19 @@
             <th>Active</th>
             <th>Edit</th>
         </tr>
-        <tr ng-repeat="department in vm.departments | filter:vm.search | orderBy:'active':true" ng-if="vm.departments.length > 0" >
+        <tr ng-repeat="department in vm.departments | filter:vm.search | orderBy:'active':true"
+            ng-if="vm.departments.length > 0">
             <td>{{$index + 1}}</td>
             <td>{{department.name}}</td>
             <td>{{department.code}}</td>
             <td>{{department.active}}</td>
             <td>
-                <button class="btn btn-default" ng-click="vm.showModal('edit', department)">
-                    Edit <span class="glyphicon glyphicon-pencil"></span></button>
+                <a ng-click="vm.showModal('edit', department)">
+                    Edit <span class="glyphicon glyphicon-pencil"></span>
+                </a>
             </td>
         </tr>
-        <tr ng-if="!!vm.departments.length == 0" class="emptyInbox">
+        <tr ng-if="vm.hasDepartments()" class="emptyInbox">
             <th colspan="5">No departments found.</th>
         </tr>
     </table>

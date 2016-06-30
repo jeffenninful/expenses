@@ -6,7 +6,7 @@ var userModel = new Schema({
     lastName: {type: String},
     email: {
         type: String,
-        validate: function(input){
+        validate: function (input) {
             return /^.+@.+\..+$/.test(input);
         }
     },
@@ -22,4 +22,3 @@ var userModel = new Schema({
 });
 
 module.exports = mongoose.model('User', userModel);
-

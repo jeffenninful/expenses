@@ -8,6 +8,7 @@
             'ngTouch',
             'ngSanitize',
             'ngMessages',
+            'ngTable',
             'ui.router',
             'ui.bootstrap',
             'toastr',

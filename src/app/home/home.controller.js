@@ -17,9 +17,6 @@
         vm.expenseTotal = 0;
         vm.milageRate = 0.55;
         vm.currentMonth = $filter('date')(new Date(), 'MMMM');
-        vm.cancel = cancel;
-        vm.saveExpense = saveExpense;
-        vm.calculateTotal = calculateTotal;
 
         init();
 
@@ -56,18 +53,15 @@
             vm.date.opened = true;
         }
 
-        function cancel() {
+        vm.cancel = function () {
             $state.reload();
-        }
+        };
 
-        function saveExpense(form) {
+        vm.saveExpense = function (form) {
             if (form.$valid) {
-                if (vm.receipt) {
-                    vm.expense.file = vm.receipt;
-                }
-                if (vm.expense.category === 'Mileage') {
-                    vm.expense.amount = vm.expenseTotal;
-                }
+                vm.receipt ? vm.expense.file = vm.receipt : angular.noop();
+                vm.expense.category === 'Mileage' ? vm.expense.amount = vm.expenseTotal : angular.noop();
+
                 Upload.upload({
                     url: 'v1/expense',
                     data: vm.expense
@@ -82,9 +76,9 @@
                     toastr.error('Expense submission failed!', 'Error encountered');
                 });
             }
-        }
+        };
 
-        function calculateTotal() {
+        vm.calculateTotal = function () {
             var total = 0;
             if (vm.expense.amount !== undefined) {
                 if (vm.expense.category === 'Mileage') {
@@ -94,7 +88,7 @@
                 }
             }
             vm.expenseTotal = isNaN(total) ? 0 : total;
-        }
+        };
     }
 
     /**

@@ -1,0 +1,47 @@
+<form name="departmentForm" novalidate="novalidate" ng-submit="vm.saveDepartment(departmentForm)">
+    <div class="modal-header">
+        <h3 class="modal-title text-center"> {{ vm.action | firstLetter }} Department </h3>
+    </div>
+    <div class="modal-body">
+        <div class="form-group">
+            <label>Name</label>
+            <input type="text" class="form-control" name="name" ng-model="vm.department.name" required/>
+
+            <div ng-messages="departmentForm.name.$error"
+                 ng-show="departmentForm.name.$touched || departmentForm.$submitted">
+                <p ng-message="required"> Name is required</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label> Code </label>
+            <input type="text" class="form-control" name="code" ng-model="vm.department.code" required/>
+
+            <div ng-messages="departmentForm.code.$error"
+                 ng-show="departmentForm.code.$touched || departmentForm.$submitted">
+                <p ng-message="required"> Department code is required</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label> Active </label>
+            <select class="form-control" name="active" ng-model="vm.department.active"
+                    ng-options="item.value as item.name for item in vm.activeOptions">
+                <option value=""> Select</option>
+            </select>
+
+            <div ng-messages="departmentForm.lastName.$error"
+                 ng-show="departmentForm.lastName.$touched || departmentForm.$submitted">
+                <p ng-message="required"> Last name is required</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <div class="form-group text-center row">
+            <input type="submit" class="btn btn-primary col-sm-4 col-sm-offset-4" value="Save"/>
+        </div>
+        <div class="form-group text-center row">
+            <input type="button" class="btn btn-danger col-sm-4 col-sm-offset-4" value="Cancel"
+                   ng-click="vm.cancelModal()"/>
+        </div>
+    </div>
+</form>
